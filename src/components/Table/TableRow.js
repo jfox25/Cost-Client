@@ -6,7 +6,7 @@ const TableRow = (props) => {
     function getProperties(obj) {
         let properties = []
         Object.keys(obj).forEach(e => {
-            if(e !== "Id")
+            if(e !== "id")
             {
                 properties.push(obj[e])
             }
