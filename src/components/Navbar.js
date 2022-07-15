@@ -10,6 +10,7 @@ const Navbar = (props) => {
             <button onClick={buttonClickHandler}>Businesses</button>
             <button onClick={buttonClickHandler}>Directives</button>
             <button onClick={buttonClickHandler}>Analytics</button>
+            <button onClick={buttonClickHandler}>Register</button>
         </div>
     )
 }

@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 import BusinessPage from "./BusinessPage";
 import CategoryPage from "./CategoryPage";
 import DirectivePage from "./DirectivePage";
+import Register from "./Login/Register";
 
 const PageControl = () => {
     const [activePage, setActivePage] = useState("Expenses");
@@ -29,6 +30,9 @@ const PageControl = () => {
                 break;
             case "Analytics":
                 setContent(<DemoAnalytics/>)
+                break;
+            case "Register":
+                setContent(<Register/>)
                 break;
             default:
                 break;
