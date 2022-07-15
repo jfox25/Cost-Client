@@ -1,0 +1,50 @@
+.groupHeading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 5px;
+    width: 90%;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    background-color: rgb(220, 219, 219);
+    border-radius: 10px;
+}
+.title {
+    color: #333;
+    font-weight: bolder;
+    width: 33%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    margin-right: 35px;
+}
+.title span {
+    color: #d2042d;
+    font-size: 25px;
+}
+.numberOfItems {
+    color: #333;
+    font-size: 20px;
+    width: 33%;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    margin-right: 25px;
+}
+.numberOfItems span {
+    color: blue;
+}
+.costOfItems {
+    color: #333;
+    font-size: 20px;
+    width: 33%;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    margin-right: 25px;
+}
+.costOfItems span{
+    color: green;
+}

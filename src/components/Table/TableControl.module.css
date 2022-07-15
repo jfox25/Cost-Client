@@ -1,0 +1,13 @@
+.filters {
+    border: 3px solid rgb(220, 219, 219);
+    width: auto;
+    max-width: 90%;
+    margin: auto;
+    margin-bottom: 20px;
+}
+.filters div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}

@@ -1,16 +1,10 @@
 import './App.css';
-import Demo from './components/Demo';
-import DemoAnalytics from './components/DemoAnalytics';
-import DemoFrequents from './components/DemoFrequents';
-import DemoLocations from './components/DemoLocations';
+import PageControl from "./components/PageControl";
 
 function App() {
   return (
     <div className="App">
-      <Demo />
-      <DemoFrequents />
-      <DemoLocations />
-      <DemoAnalytics />
+      <PageControl />
     </div>
   );
 }

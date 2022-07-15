@@ -1,0 +1,35 @@
+.resultsBox {
+    position: absolute;
+    transform: translate(50%, 0%);
+    width: 145px;
+    margin: auto;
+    background-color: white;
+    border: 3px solid #d2042d;
+    border-radius: 7px;
+    margin-top: 10px;
+    list-style: none;
+    z-index: 2;
+    padding: 0;
+}
+.selectInput {
+    position: relative;
+}
+.searchElement {
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    padding: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 17px;
+}
+.searchElement:hover {
+    cursor: pointer;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+.inValid {
+    color: red;
+}
+.Valid {
+    color:#333;
+}

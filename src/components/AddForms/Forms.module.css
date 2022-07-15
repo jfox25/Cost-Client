@@ -1,0 +1,31 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+    margin-bottom: 0;
+}
+.form div label {
+    margin-right: 10px;
+}
+.form button{
+    margin-top: 20px;
+    background-color: whitesmoke;
+    border: 3px solid #d2042d;
+    color: #d2042d;
+    font-size: 15px;
+    margin-bottom: 0;
+    padding: 4px 7px;
+    border-radius: 5px;
+}
+.form button:hover {
+    background-color: #d2042d;
+    color: whitesmoke;
+    cursor: pointer;
+}
+.form div {
+    margin-bottom: 20px;
+}

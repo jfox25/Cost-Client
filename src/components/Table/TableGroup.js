@@ -1,10 +1,12 @@
+import GroupHeading from "./GroupHeading";
 import TableRow from "./TableRow";
+import styles from './TableGroup.module.css'
 
 const TableGroup = (props) => {
     return (
-        <div>
-            <h1>{props.groupName}</h1>
-            {props.items.map((item) => (<TableRow item = {item} key={item.id} columns={props.columns}/>))}
+        <div className={styles.tableGroup}>
+            <GroupHeading totalCostOfItems={props.totalCostOfItems} items={props.items} groupName={props.groupName} activeColumn={props.activeColumn}/>
+            {props.items.map((item) => (<TableRow item = {item} key={item.id} searchValue={props.searchValue}/>))}
         </div>
     )
 }

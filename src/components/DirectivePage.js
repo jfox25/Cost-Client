@@ -1,19 +1,19 @@
 import {useState, useEffect, useCallback} from "react"
 import TableControl from "./Table/TableControl"
 
-const DemoFrequents = () => {
+const DirectivePage = () => {
     const [items, setItems] = useState([]);
     const [isloading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     
-    const columns = [ "Location", "Category" , "Directive" , "LastBilledDate", "Cost"]
+    const columns = [ {name:"Name", sortable: false}, {name:"Expense Count", sortable: true}, {name:"Total Cost", sortable: true}]
     const fetchItemHandler = useCallback(async () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://localhost:5001/api/frequents', {
+            const response = await fetch('https://localhost:5001/api/directives', {
                 headers: new Headers({
-                    "Authorization" : ''
+                    "Authorization" : `Bearer ${process.env.REACT_APP_AUTHORIZATION}`
                 })
             })
             if(!response.ok)
@@ -21,17 +21,14 @@ const DemoFrequents = () => {
                 throw new Error('Something went wrong')
             }
             const data = await response.json()
-
-            const transformedFrequents = data.map(frequent => { return {
-                id : frequent.frequentId,
-                Location : frequent.locationName,
-                Category : frequent.categoryName,
-                Directive : frequent.directiveName,
-                Date : frequent.lastBilledDate,
-                Cost : frequent.cost,
-                } 
+            const transformedItems = data.map(directive => { return {
+                    id : directive.directiveId,
+                    Name : directive.name,
+                    ExpenseCount : directive.numberOfExpenses,
+                    TotalCost : directive.totalCostOfExpenses
+                }
             })
-            setItems(transformedFrequents)
+            setItems(transformedItems)
         } catch (error) {
             setError(error.message);
         }
@@ -50,10 +47,10 @@ const DemoFrequents = () => {
     }
     return (
         <div>
-            <h1>Frequents</h1>
+            <h1>Directives</h1>
             {content}
         </div>
     )
 }
 
-export default DemoFrequents;
+export default DirectivePage;

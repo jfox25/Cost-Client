@@ -1,4 +1,12 @@
+import styles from './TableFilter.module.css'
 const TableFilter = (props) => {
+    const isActive = (value) => {
+        if(value === props.activeFilter)
+        {
+            return true
+        }
+        return false
+    }
     const currentMonthClickHandler = () => {
         props.onFilterItems("currentMonth")
     }
@@ -10,9 +18,11 @@ const TableFilter = (props) => {
     }
     return (
         <div>
-            <button onClick={currentMonthClickHandler}>Current Month</button>
-            <button onClick={currentYearClickHandler}>Current Year</button>
-            <button onClick={allClickHandler}>All</button>
+            <div className={styles.filterButtonGroup}>
+                <button className= {`${styles.filterButton} ${isActive("currentMonth") && styles.active}`} onClick={currentMonthClickHandler}>Current Month</button>
+                <button className={`${styles.filterButton} ${isActive("currentYear") && styles.active}`} onClick={currentYearClickHandler}>Current Year</button>
+                <button className={`${styles.filterButton} ${isActive("all") && styles.active}`} onClick={allClickHandler}>All</button>
+            </div>
         </div>
     )
 }

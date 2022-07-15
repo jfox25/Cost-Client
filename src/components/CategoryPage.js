@@ -1,17 +1,19 @@
 import {useState, useEffect, useCallback} from "react"
+import AddCatagoryForm from "./AddForms/AddCatagoryForm";
 import TableControl from "./Table/TableControl"
+import AddControl  from "./Add/AddControl";
 
-const DemoAnalytics = () => {
+const CategoryPage = () => {
     const [items, setItems] = useState([]);
     const [isloading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const columns = [{name:"Month", sortable: false}, {name:"Expense Count", sortable: true}, {name:"Total Cost", sortable: true}, {name:"Top Location", sortable: true}]
+    
+    const columns = [ {name:"Name", sortable: false}, {name:"Expense Count", sortable: true}, {name:"Total Cost", sortable: true}]
     const fetchItemHandler = useCallback(async () => {
-        const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://localhost:5001/api/analytic/generalAnalytics', {
+            const response = await fetch('https://localhost:5001/api/categories', {
                 headers: new Headers({
                     "Authorization" : `Bearer ${process.env.REACT_APP_AUTHORIZATION}`
                 })
@@ -21,12 +23,11 @@ const DemoAnalytics = () => {
                 throw new Error('Something went wrong')
             }
             const data = await response.json()
-            const transformedItems = data.map(item => { return {
-                    id : item.generalAnalyticId,
-                    Time :  `${month[new Date(item.date).getMonth()]}, ${new Date(item.date).getFullYear()}`,
-                    ExpenseCount : item.numberOfExpenses,
-                    TotalCost : item.totalCostOfExpenses,
-                    TopLocation : item.locationName
+            const transformedItems = data.map(category => { return {
+                    id : category.categoryId,
+                    Name : category.name,
+                    ExpenseCount : category.numberOfExpenses,
+                    TotalCost : category.totalCostOfExpenses
                 }
             })
             setItems(transformedItems)
@@ -48,10 +49,11 @@ const DemoAnalytics = () => {
     }
     return (
         <div>
-            <h1>General Analytics</h1>
+            <h1>Categories</h1>
             {content}
+            <AddControl content={<AddCatagoryForm fetchItems={fetchItemHandler}/>}/>
         </div>
     )
 }
 
-export default DemoAnalytics;
+export default CategoryPage;
