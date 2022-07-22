@@ -1,7 +1,9 @@
 import React, {useRef, useState, useCallback, useEffect} from 'react'
 import styles from './Forms.module.css'
 import SelectInput from './SelectInput';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 export default function AddBusinessForm({ onClose, fetchItems }) {
+    const axiosPrivate = useAxiosPrivate();
     const [catagories, setCatagories] = useState([]);
     const [isloading, setIsLoading] = useState(false);
     const[catagoryId, setCatagoryId] = useState(0);
@@ -20,47 +22,41 @@ export default function AddBusinessForm({ onClose, fetchItems }) {
         postBusiness(business);
     }
     const postBusiness = async (business) => {
-        const response = await fetch('https://localhost:5001/api/business', {
-            method: 'POST',
-            headers: new Headers({
-                "Content-Type" : "application/json",
-                "Authorization" : `Bearer ${process.env.REACT_APP_AUTHORIZATION}`
-            }),
-            body: JSON.stringify(business)
-        });
-        const data = await response.json();
-        fetchItems();
-        onClose();
-    }
-    const fetchItemHandler = useCallback(async () => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const response = await fetch('https://localhost:5001/api/categories', {
-                headers: new Headers({
-                    "Authorization" : `Bearer ${process.env.REACT_APP_AUTHORIZATION}`
-                })
-            })
-            if(!response.ok)
+        try{
+            const response = await axiosPrivate.post("/business",
+            JSON.stringify(business),
             {
-                throw new Error('Something went wrong')
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             }
-            const data = await response.json()
-            const transformedItems = data.map(category => { return {
-                    id : category.categoryId,
-                    Name : category.name,
-                }
-            })
-            setCatagories(transformedItems)
-        } catch (error) {
-            setError(error.message);
+            );
+            fetchItems();
+            onClose();
+        } catch(error) {
+            console.error(error)
         }
-        setIsLoading(false)
-
-    }, [])
+    }
     useEffect(() => {
+        const fetchItemHandler = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const response = await axiosPrivate.get("/categories")
+                const transformedItems = response.data?.map(category => { return {
+                        id : category.categoryId,
+                        Name : category.name,
+                    }
+                })
+                console.log(transformedItems)
+                setCatagories(transformedItems)
+            } catch (error) {
+                setError(error.message);
+            }
+            setIsLoading(false)
+    
+        }
         fetchItemHandler();
-    }, [fetchItemHandler]);
+    }, []);
     const onSelectInputSubmitHandler = (value) => {
         if(value.name !== "")
         {
@@ -86,7 +82,7 @@ export default function AddBusinessForm({ onClose, fetchItems }) {
             <label htmlFor='name'>Name</label>
             <input id='name' type="text" ref={nameRef} required/>
         </div>
-        <SelectInput onSubmit={onSelectInputSubmitHandler} label={"Category"} isRequired={false} items={catagories} />
+        <SelectInput onSubmit={onSelectInputSubmitHandler} label={"Category"} isRequired={false} items={catagories}/>
         <button>Add Business</button>
     </form>
     </>

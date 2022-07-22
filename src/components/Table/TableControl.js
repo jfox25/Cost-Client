@@ -99,7 +99,7 @@ const TableControl = (props) => {
             <TableSearch onTableSearch={tableSortHandler} />
           </div>
         </div>
-        <Table totalCostOfItems={totalCostOfItems} searchValue={searchTableValue} onItemsSort={sortItemHandler} items = {sortItems(filterItems(activeFilter, filterSearchItems(props.items)), activeColumn)} columns = {props.columns} activeColumn = {activeColumn}/>
+        <Table url={props.url} totalCostOfItems={totalCostOfItems} searchValue={searchTableValue} onItemsSort={sortItemHandler} items = {sortItems(filterItems(activeFilter, filterSearchItems(props.items)), activeColumn)} columns = {props.columns} activeColumn = {activeColumn}/>
       </div>
   )
 }

@@ -1,8 +1,9 @@
 import React, {useRef, useState, useCallback, useEffect} from 'react'
 import styles from './Forms.module.css'
 import RequiredSelectInput from './RequiredSelectInput';
-import SelectInput from './SelectInput';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 export default function AddFrequentForm({ onClose, fetchItems }) {
+    const axiosPrivate = useAxiosPrivate();
     const directives = [{directiveId: 1, name: "Overhead"}, {directiveId: 2, name: "Investment"}, {directiveId: 3, name: "Discretionary"}]
     const [catagories, setCatagories] = useState([]);
     const [businesses, setBusinesses] = useState([]);
@@ -39,75 +40,60 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
         }
     }
     const postFrequent = async (frequent) => {
-        const response = await fetch('https://localhost:5001/api/frequents', {
-            method: 'POST',
-            headers: new Headers({
-                "Content-Type" : "application/json",
-                "Authorization" : `Bearer ${process.env.REACT_APP_AUTHORIZATION}`
-            }),
-            body: JSON.stringify(frequent)
-        });
-        const data = await response.json();
-        console.log(data)
-        fetchItems();
-        onClose();
+        try {
+            const response = await axiosPrivate.post("/frequents",
+                JSON.stringify(frequent ),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+            fetchItems();
+            onClose();
+        }
+        catch(error) {
+            console.error(error)
+        }
     }
-    const fetchCatagoriesHandler = useCallback(async () => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const response = await fetch('https://localhost:5001/api/categories', {
-                headers: new Headers({
-                    "Authorization" : `Bearer ${process.env.REACT_APP_AUTHORIZATION}`
-                })
-            })
-            if(!response.ok)
-            {
-                throw new Error('Something went wrong')
-            }
-            const data = await response.json()
-            const transformedItems = data.map(category => { return {
-                    id : category.categoryId,
-                    Name : category.name,
-                }
-            })
-            setCatagories(transformedItems)
-        } catch (error) {
-            setError(error.message);
-        }
-        setIsLoading(false)
-
-    }, [])
-    const fetchBusinessHandler = useCallback(async () => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const response = await fetch('https://localhost:5001/api/business', {
-                headers: new Headers({
-                    "Authorization" : `Bearer ${process.env.REACT_APP_AUTHORIZATION}`
-                })
-            })
-            if(!response.ok)
-            {
-                throw new Error('Something went wrong')
-            }
-            const data = await response.json()
-            const transformedItems = data.map(business => { return {
-                    id : business.businessId,
-                    Name : business.name,
-                }
-            })
-            setBusinesses(transformedItems)
-        } catch (error) {
-            setError(error.message);
-        }
-        setIsLoading(false)
-
-    }, [])
     useEffect(() => {
+        const fetchCatagoriesHandler = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const response = await axiosPrivate.get("/categories");
+                
+                const transformedItems = response.data?.map(category => { return {
+                        id : category.categoryId,
+                        Name : category.name,
+                    }
+                })
+                setCatagories(transformedItems)
+            } catch (error) {
+                setError(error.message);
+            }
+            setIsLoading(false)
+    
+        }
+        const fetchBusinessHandler = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const response = await axiosPrivate.get("/business");
+                const transformedItems = response.data?.map(business => { return {
+                        id : business.businessId,
+                        Name : business.name,
+                    }
+                })
+                setBusinesses(transformedItems)
+            } catch (error) {
+                setError(error.message);
+            }
+            setIsLoading(false)
+    
+        }
         fetchCatagoriesHandler();
-        fetchBusinessHandler()
-    }, [fetchCatagoriesHandler, fetchBusinessHandler]);
+        fetchBusinessHandler();
+    }, []);
     const onCatagorySelectInputSubmitHandler = (value) => {
         if(value.name !== "")
         {
@@ -137,8 +123,8 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
             <label htmlFor='name'>Name</label>
             <input id='name' type="text" ref={nameRef} required/>
         </div>
-        <RequiredSelectInput onSubmit={onCatagorySelectInputSubmitHandler} label={"Category"} items={catagories} />
-        <RequiredSelectInput onSubmit={onBusinessSelectInputSubmitHandler} label={"Business"} items={businesses} />
+        <RequiredSelectInput isRequired={true} onSubmit={onCatagorySelectInputSubmitHandler} label={"Category"} items={catagories} />
+        <RequiredSelectInput isRequired={true} onSubmit={onBusinessSelectInputSubmitHandler} label={"Business"} items={businesses} />
         <div>
             <label htmlFor='directive'>Directive</label>
             <select id='directive' ref={directiveRef}>{directives.map(directive => <option key={directive.directiveId} value={directive.directiveId}>{directive.name}</option>)}</select>

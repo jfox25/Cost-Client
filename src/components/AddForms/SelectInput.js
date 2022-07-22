@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from './SelectInput.module.css'
 
-const SelectInput = ({label, items, onSubmit}) => {
+const SelectInput = ({label, items, onSubmit, isRequired}) => {
     const [shownItems, setShownItems] = useState([]);
     const [showResults, setShowResults] = useState(false);
     const inputRef = useRef('')
@@ -13,13 +13,16 @@ const SelectInput = ({label, items, onSubmit}) => {
     const handleSearchItemClick = (event) => {
         event.stopPropagation();
         const value = {id : event.currentTarget.id, name: event.currentTarget.getAttribute("name")}
+        console.log(value)
         inputRef.current.value = value.name
         onSubmit(value)
     }
     useEffect(() => {
         if(showResults === true) {
             handleFilterItems("");
-        } 
+        }else {
+            onSubmit({id : 0, name: inputRef.current.value})
+        }
     }, [showResults]);
     const getHighlightedText = (text) => {
         const parts = text.split(new RegExp(`(${inputRef.current.value})`, 'gi'));
@@ -36,7 +39,7 @@ const SelectInput = ({label, items, onSubmit}) => {
     return (
         <div onBlur={() => setShowResults(false)} onFocus={() => setShowResults(true)} className={styles.selectInput}>
             <label onClick={(event) =>  event.stopPropagation()}>{label}</label>
-            <input type="text" placeholder={`Click for ${label}`} ref={inputRef} onChange={handleFilterItems}/> 
+            <input type="text" placeholder={`Click for ${label}`} ref={inputRef} onChange={handleFilterItems} required={isRequired}/> 
             {(showResults) ? <ul className={styles.resultsBox}>{(shownItems.length > 0) ? shownItems.map(item => <li onMouseDown={handleSearchItemClick} className={styles.searchElement} id={item.id} name={item.Name} key={item.id}>{getHighlightedText(item.Name)}</li>) : <li>No Results</li>}</ul> : null}
         </div>
     )

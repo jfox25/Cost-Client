@@ -2,6 +2,8 @@ import {useState, useEffect, useCallback} from "react"
 import TableControl from "./Table/TableControl"
 import AddFrequentForm from "./AddForms/AddFrequentForm";
 import AddControl from "./Add/AddControl"
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import  { useNavigate, useLocation } from "react-router-dom";
 
 const FrequentPage = () => {
     const dateConvertor = (date, monthIncrementor = 0) => {
@@ -22,22 +24,16 @@ const FrequentPage = () => {
     const [items, setItems] = useState([]);
     const [isloading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const axiosPrivate = useAxiosPrivate();
     const columns = [{name: "Business", sortable: true}, {name: "Category", sortable: true}, {name: "Is Recurring", sortable: true}, {name:"Last Used Date", sortable: true}, {name: "Next Bill Date", sortable: false}, {name: "Cost", sortable: false}]
-    const fetchItemHandler = useCallback(async () => {
+    const fetchItemHandler = async () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://localhost:5001/api/frequents', {
-                headers: new Headers({
-                    "Authorization" : `Bearer ${process.env.REACT_APP_AUTHORIZATION}`
-                })
-            })
-            if(!response.ok)
-            {
-                throw new Error('Something went wrong')
-            }
-            const data = await response.json();
-            const transformedFrequents = data.map(frequent => { return {
+            const response = await axiosPrivate.get("/frequents");
+            const transformedFrequents = response.data?.map(frequent => { return {
                 id : frequent.frequentId,
                 Business : frequent.businessName,
                 Category : frequent.categoryName,
@@ -50,14 +46,15 @@ const FrequentPage = () => {
             setItems(transformedFrequents)
         } catch (error) {
             setError(error.message);
+            navigate('/login', { state : {from: location, message: "Session has expired"}, replace : true});
         }
         setIsLoading(false)
 
-    }, [])
+    }
     useEffect(() => {
         fetchItemHandler();
-    }, [fetchItemHandler]);
-    let content = <TableControl addFilter={false} columns={columns} items={items} />;
+    }, []);
+    let content = <TableControl url="/frequents" addFilter={false} columns={columns} items={items} />;
     if(error) {
         content = <p>{error}</p>
     }

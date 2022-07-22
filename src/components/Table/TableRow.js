@@ -32,8 +32,11 @@ const TableRow = (props) => {
         
         return properties
     }
+    const showDetailHandler = () => {
+        props.onTableRowClick(item.id)
+    }
     return (
-        <tr className={styles['table-row']}>
+        <tr onClick={showDetailHandler} className={styles['table-row']}>
             {propertyValues.map((propertyValue, index) => <td className={styles['table-row-item']} key={index}>{getHighlightedText(propertyValue)}</td>)}
         </tr>
     )

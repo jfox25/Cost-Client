@@ -1,0 +1,87 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    max-width: 1000px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+
+.navbarItem {
+    text-decoration: none;
+    color: #333;
+    padding: 6px 10px;
+    font-size: 19px;
+    border: 2px solid #d2042d;
+    border-radius: 6px;
+    color: #d2042d;
+    background-color: whitesmoke;
+    font-weight: bold;
+    transition: all 0.4s;
+}
+
+.navbarItem:hover {
+    background-color: #d2042d;
+    color: whitesmoke;
+}
+
+.accountInfo {
+    margin-left: auto;
+    max-width: 300px;
+    background-color: rgb(220, 219, 219);
+    border: 2px solid #d2042d;
+    border-radius: 5px;
+    padding: 5px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+.accountInfo div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.nickName {
+    font-size: 19px;
+    color: #333;
+    font-weight: bold;
+    margin: 10px 0px 0px 0px;
+}
+
+.email {
+    font-size: 15px;
+    color: #d2042d;
+    margin: 5px 0px 8px 0px;
+}
+
+.accountInfo button {
+    padding: 5px 12px;
+    margin-bottom: 5px;
+    border: 2px solid #d2042d;
+    font-size: 18px;
+    color: #d2042d;
+    transition: all 0.3s;
+}
+.accountInfo button:hover {
+   background-color: #d2042d;
+   cursor: pointer;
+   color: whitesmoke;
+}
+.active {
+    text-decoration: none;
+    padding: 6px 10px;
+    font-size: 19px;
+    border: 2px solid #d2042d;
+    border-radius: 6px;
+    color: whitesmoke;
+    background-color: #d2042d;
+    font-weight: bold;
+    pointer-events: none;
+}

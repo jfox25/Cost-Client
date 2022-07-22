@@ -1,6 +1,8 @@
 import React, {useRef} from 'react'
 import styles from './Forms.module.css'
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 export default function AddCatagoryForm({ onClose, fetchItems }) {
+    const axiosPrivate = useAxiosPrivate();
     const nameRef = useRef('')
     const submitHandler = (event) => {
         event.preventDefault();
@@ -11,18 +13,19 @@ export default function AddCatagoryForm({ onClose, fetchItems }) {
         postItem(catagory);
     }
     const postItem = async (catagory) => {
-        const response = await fetch('https://localhost:5001/api/categories', {
-            method: 'POST',
-            headers: new Headers({
-                "Content-Type" : "application/json",
-                "Authorization" : `Bearer ${process.env.REACT_APP_AUTHORIZATION}`
-            }),
-            body: JSON.stringify(catagory)
-        });
-        const data = await response.json();
-        console.log(data)
-        fetchItems();
-        onClose();
+        try{
+            const response = await axiosPrivate.post("/categories",
+            JSON.stringify(catagory),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+            );
+            fetchItems();
+            onClose();
+        } catch(error) {
+            console.error(error)
+        }
     }
   return (
     <>

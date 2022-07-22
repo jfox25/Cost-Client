@@ -17,11 +17,11 @@ const GroupHeading = (props) => {
     }
     const numberOfItems = props.items.length;
     return (
-        <div className={styles.groupHeading}>
-           {!hasNoGroupName() && <div className={styles.title}>{titleIsInt(props.groupName) && `${props.activeColumn.replace(/([A-Z])/g, ' $1').trim()} :`}<span>{props.groupName}</span></div>}
-           <div className={styles.numberOfItems}>Total Number: <span>{numberOfItems}</span></div>
-           {hasCostProperty && <div className={styles.costOfItems}>Total Cost: <span>${totalCostOfItems(props.items)}/{getPercentageOfTotalCost(props.totalCostOfItems ,totalCostOfItems(props.items))}%</span></div> }
-        </div>
+        <tr className={styles.groupHeading}>
+           {!hasNoGroupName() && <th className={styles.title}>{titleIsInt(props.groupName) && `${props.activeColumn.replace(/([A-Z])/g, ' $1').trim()} :`}<span>{props.groupName}</span></th>}
+           <th className={styles.numberOfItems}>Total Number: <span>{numberOfItems}</span></th>
+           {hasCostProperty && <th className={styles.costOfItems}>Total Cost: <span>${totalCostOfItems(props.items)}/{getPercentageOfTotalCost(props.totalCostOfItems ,totalCostOfItems(props.items))}%</span></th> }
+        </tr>
     )
 }
 

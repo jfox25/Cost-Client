@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from './SelectInput.module.css'
 
-const RequiredSelectInput = ({label, items, onSubmit}) => {
+const RequiredSelectInput = ({label, items, onSubmit, isRequired}) => {
     const [shownItems, setShownItems] = useState([]);
     const [showResults, setShowResults] = useState(false);
     const [isValid, setIsValid] = useState(false);
@@ -21,10 +21,12 @@ const RequiredSelectInput = ({label, items, onSubmit}) => {
         setShownItems(filteredItems);
         if(inputRef.current.value !== value.name)
         {
+            console.log("CHANGEValue")
             setValue({id: 0, name: ""});
         }
     }
     const handleSearchItemClick = (event) => {
+        console.log("CLICK")
         event.stopPropagation();
         setValue({id : event.currentTarget.id, name: event.currentTarget.getAttribute("name")})
         // inputRef.current.value = event.currentTarget.getAttribute("name")
@@ -33,6 +35,7 @@ const RequiredSelectInput = ({label, items, onSubmit}) => {
         if(value.id === 0)
         {
             setIsValid(false)
+            onSubmit(value)
         }else {
             setIsValid(true)
             onSubmit(value)
@@ -71,7 +74,7 @@ const RequiredSelectInput = ({label, items, onSubmit}) => {
     return (
         <div onBlur={() => setShowResults(false)} onFocus={() => setShowResults(true)} className={styles.selectInput}>
             <label className={(!isValid) ? styles.inValid : styles.Valid} onClick={(event) =>  event.stopPropagation()}>{label}</label>
-            <input placeholder={`Click for ${label}`} ref={inputRef} onChange={handleFilterItems} type="text" required/>
+            <input placeholder={`Click for ${label}`} ref={inputRef} onChange={handleFilterItems} type="text" required={isRequired}/>
             {(showResults) ? <ul className={styles.resultsBox}>{(shownItems.length > 0) ? shownItems.map(item => <li onMouseDown={handleSearchItemClick} className={styles.searchElement} id={item.id} name={item.Name} key={item.id}>{getHighlightedText(item.Name)}</li>) : <li>No Results</li>}</ul> : null}
         </div>
     )
