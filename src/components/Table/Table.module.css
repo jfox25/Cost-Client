@@ -2,3 +2,31 @@
     width: 90%;
     margin: auto;
 }
+
+/* Pagination */
+.pagination {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    list-style: none;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+.pagination li {
+    margin-right: 15px;
+}
+.pagination li button{
+   background-color: whitesmoke;
+   border: none;
+   color: #d2042d;
+   font-size: 20px;
+}
+.pagination li button:hover{
+    text-decoration: underline;
+    cursor: pointer;
+ }
+ .active {
+    text-decoration: underline;
+ }

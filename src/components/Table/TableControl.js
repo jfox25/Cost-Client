@@ -3,36 +3,41 @@ import {useState, useEffect, useRef} from 'react';
 import TableFilter from "./TableFilter";
 import TableSearch from "./TableSearch";
 import styles from './TableControl.module.css'
-const TableControl = (props) => {
+import PaginationControls from "./PaginationControls";
+const ALL = "all";
+const CURRENT_MONTH = "currentMonth";
+const CURRENT_YEAR = "currentYear"
+const TableControl = ({items, addFilter, url, columns}) => {
   const [activeColumn, setActiveColumn] = useState("");
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeFilter, setActiveFilter] = useState(ALL);
   const [searchTableValue, setSearchTableValue] = useState("");
   const [totalCostOfItems, setTotalCostOfItems] = useState(0);
+
   const prevActiveColumn = useRef();
   useEffect(() => {
     prevActiveColumn.current = activeColumn;
   }, [activeColumn]); 
   useEffect(() => {
-    if(props.items.length > 0)
+    if(items.length > 0)
     {
       switch (activeFilter) {
-        case "all":
-          const allItems = props.items;
+        case ALL:
+          const allItems = items;
           setTotalCostOfItems(gettotalCostOfItems(allItems));
           break;
-        case "currentMonth":
-          const currentMonthItems = props.items.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
+        case CURRENT_MONTH:
+          const currentMonthItems = items.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
           setTotalCostOfItems(gettotalCostOfItems(currentMonthItems));
           break;
-        case "currentYear":
-          const currentYearItems = props.items.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
+        case CURRENT_YEAR:
+          const currentYearItems = items.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
           setTotalCostOfItems(gettotalCostOfItems(currentYearItems));
           break;
         default:
-          setTotalCostOfItems(gettotalCostOfItems(props.items));
+          setTotalCostOfItems(gettotalCostOfItems(items));
       }
     }
-  }, [activeFilter, props.items])
+  }, [activeFilter, items])
   const sortItemHandler = (sortValue) => {
     const sortValueNoSpaces = sortValue.replace(/\s/g, "");
     if(sortValueNoSpaces === prevActiveColumn.current)
@@ -49,28 +54,28 @@ const TableControl = (props) => {
   const tableSortHandler = (searchValue) => {
     setSearchTableValue(searchValue)
   }
-  const gettotalCostOfItems = (items) => {
-    if(items[0].hasOwnProperty("Cost"))
+  const gettotalCostOfItems = (filteredItems) => {
+    if(filteredItems[0].hasOwnProperty("Cost"))
     {
-      return items.reduce(function (acc, obj) { return acc + obj.Cost; }, 0);
+      return filteredItems.reduce(function (acc, obj) { return acc + obj.Cost; }, 0);
     }else {
       return 0;
     }
   }
-  const filterItems = (fitlerValue, items) => {
+  const filterItems = (fitlerValue, filteredItems) => {
     switch (fitlerValue) {
-      case "all":
-        return items;
-      case "currentMonth":
-        return items.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
-      case "currentYear":
-        return items.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
+      case ALL:
+        return filteredItems;
+      case CURRENT_MONTH:
+        return filteredItems.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
+      case CURRENT_YEAR:
+        return filteredItems.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
       default:
-        return items;
+        return filteredItems;
     }
   }
-    const sortItems = (items, property) => {
-        return items.sort(function(a,b){
+    const sortItems = (filteredItems, property) => {
+        return filteredItems.sort(function(a,b){
             if ( a[property]< b[property]){
                 return -1;
               }
@@ -80,28 +85,46 @@ const TableControl = (props) => {
               return 0;
         })
       }
-    const filterSearchItems = (items) => {
+    const filterSearchItems = (filteredItems) => {
       if(searchTableValue !== ""){
-        const result = items.filter((item) => {
+        const result = filteredItems.filter((item) => {
             return Object.values(item).join(" ").toLowerCase().includes(searchTableValue.toLowerCase());
           })
           return result;
         } else {
-          return items;
+          return filteredItems;
         }
     }
   return (
-      <div>
-        <div className={styles.filters}>
-          <h3>Filters</h3>
-          <div>
-            {props.addFilter ? <TableFilter onFilterItems = {filterItemHandler} activeFilter = {activeFilter} /> : undefined}
-            <TableSearch onTableSearch={tableSortHandler} />
-          </div>
+    <div>
+      <div className={styles.filters}>
+        <h3>Filters</h3>
+        <div>
+          {addFilter ? (
+            <TableFilter
+              onFilterItems={filterItemHandler}
+              activeFilter={activeFilter}
+            />
+          ) : undefined}
+          <TableSearch onTableSearch={tableSortHandler} />
         </div>
-        <Table url={props.url} totalCostOfItems={totalCostOfItems} searchValue={searchTableValue} onItemsSort={sortItemHandler} items = {sortItems(filterItems(activeFilter, filterSearchItems(props.items)), activeColumn)} columns = {props.columns} activeColumn = {activeColumn}/>
       </div>
-  )
+      <Table
+        url={url}
+        totalCostOfItems={totalCostOfItems}
+        searchValue={searchTableValue}
+        onItemsSort={sortItemHandler}
+        displayItems={
+          sortItems(
+            filterItems(activeFilter, filterSearchItems(items)),
+            activeColumn
+          )
+        }
+        columns={columns}
+        activeColumn={activeColumn}
+      />
+    </div>
+  );
 }
 
 export default TableControl;
