@@ -1,0 +1,58 @@
+.directiveNameList {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    list-style: none;
+    padding: 0;
+    margin-top: 40px;
+}
+.directiveNameList li {
+    color: #d2042d;
+    font-size: 22px;
+}
+.directiveNameList li:hover {
+    cursor: pointer;
+}
+.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+.description {
+    width: 90%;
+    margin: auto;
+    line-height: 1.7rem;
+}
+.directiveTablePage {
+    border: 3px solid #333;
+    width: 90%;
+    margin: auto;
+    margin-top: 40px;
+    border-radius: 10px;
+    font-size: 19px;
+    padding: 5px;
+}
+.directiveTablePage h1 {
+    color: #d2042d;
+}
+.accentColor {
+    color: blue;
+    font-weight: bold;
+}
+.directiveTablePage div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 21px;
+}
+.label {
+    margin-right: 3px;
+}
+.totalCost {
+    color: green;
+    font-weight: bold;
+}
+.directiveExpenseCount {
+    font-size: 21px;
+}

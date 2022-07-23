@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import {Link, useNavigate, useLocation} from "react-router-dom"
 import axios from "../../api/axios";
+import logo from "../../images/CostLogo.png"
 import styles from "./Register.module.css"
 
 const Login = () => {
@@ -54,9 +55,11 @@ const Login = () => {
  return (
     <>
         <form className={styles.form} onSubmit={handleFormSubmit}>
+            <img src={logo} className={styles.logo}/>
+            <h2 className={styles.loginTitle}>Login</h2>
             <div className={styles.error}>
-                {(message === "") ? <p></p> : <p>Message: {message}</p>}
-                {(error === "") ? <p></p> : <p>Error : {error}</p>}
+                {(message === "") ? null : <p className={styles.message}>{message}</p>}
+                {(error === "") ? null : <p className={styles.errorMessage}>{error}</p>}
             </div>
             <div>
                 <label className={styles.label}>Email</label>

@@ -2,6 +2,7 @@ import {useState, useEffect, useCallback} from "react";
 import TableControl from "./Table/TableControl";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
+import DirectiveTable from "./DirectiveTable/DirectiveTable";
 
 const DirectivePage = () => {
     const [items, setItems] = useState([]);
@@ -11,7 +12,6 @@ const DirectivePage = () => {
     const location = useLocation();
     const axiosPrivate = useAxiosPrivate();
 
-    const columns = [ {name:"Name", sortable: false}, {name:"Expense Count", sortable: true}, {name:"Total Cost", sortable: true}]
     const fetchItemHandler = async () => {
         setIsLoading(true);
         setError(null);
@@ -30,12 +30,11 @@ const DirectivePage = () => {
             navigate('/login', { state : {from: location, message: "Session has expired"}, replace : true});
         }
         setIsLoading(false)
-
     }
     useEffect(() => {
         fetchItemHandler();
     }, []);
-    let content = <TableControl columns={columns} items={items} />;
+    let content = <DirectiveTable directives={items} />;
     if(error) {
         content = <p>{error}</p>
     }

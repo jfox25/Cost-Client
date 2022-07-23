@@ -20,7 +20,7 @@
     cursor: pointer;
     text-align: center;
     transition: color 0.25s, background-color 0.25s;
-    background-color: white;
+    background-color: whitesmoke;
 }
 .table-heading:hover {
     color: #d2042d;
@@ -35,6 +35,6 @@
     cursor: pointer;
     text-align: center;
     transition: color 0.25s, background-color 0.25s;
-    background-color: white;
+    background-color: whitesmoke;
     color: #888;
 }

@@ -2,6 +2,7 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import AccountInfo from "./AccountInfo";
 import Navbar from "./Navbar";
+import Logo from "./Logo";
 
 const RequireAuth = ({ allowedRoles }) => {
     const { auth } = useAuth();
@@ -12,6 +13,7 @@ const RequireAuth = ({ allowedRoles }) => {
         auth?.roles?.find(roles => allowedRoles?.includes(roles))
             ? (
                 <>
+                <Logo />
                 <AccountInfo />
                 <Navbar />
                 <Outlet />

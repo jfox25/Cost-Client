@@ -6,13 +6,15 @@
     flex-direction: column;
     border: 4px solid #d2042d;
     border-radius: 7px;
-    padding: 60px 20px;
+    padding: 40px 20px;
     margin-top: 40px;
+    padding-top: 30px;
 }
 .form div {
     display: flex;
     flex-direction: row;
-    margin-top: 30px;
+    margin-top: 23px;
+    margin-bottom: 6px;
     align-items: center;
     justify-content: center;
 }
@@ -39,6 +41,24 @@
     color: #d2042d;
     font-weight: bold;
 }
+.logo {
+    width: 270px;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.loginTitle {
+    color: #333;
+    margin-bottom: 0px;
+    margin-top: 3px;
+    font-size: 26px;
+}
+.registerTitle {
+    color: #333;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    font-size: 26px;
+}
 
 
 .form button {
@@ -46,7 +66,8 @@
     padding: 8px 12px;
     width: 100px;
     margin: auto;
-    margin-top: 45px;
+    margin-top: 30px;
+    margin-bottom: 0px;
     color: #d2042d;
     background-color: whitesmoke;
     border: 2px solid #d2042d;
@@ -74,7 +95,7 @@
     color: #fff;
     padding: 0.25rem;
     position: relative;
-    bottom: -10px;
+    bottom: -4px;
 }
 
 .instructions > svg {
@@ -118,7 +139,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-top: 2px;
+    margin-top: 0px;
     font-size: 18px;
 }
 .rememberDevice input{
@@ -136,4 +157,26 @@
 .linkBox {
     margin-top: 30px;
     margin-bottom: 0;
+}
+.message {
+    display: block;
+    background-color: #fedc98 ;
+    color: #eb7d00;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 10px 40px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+.errorMessage {
+    display: block;
+    background-color: #ff7f7f ;
+    color: #a20000;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 10px 40px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
 }

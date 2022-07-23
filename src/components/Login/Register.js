@@ -3,7 +3,8 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./Register.module.css"
 import axios from '../../api/axios';
-import {Link, useNavigate, useLocation} from "react-router-dom"
+import {Link, useNavigate, useLocation} from "react-router-dom";
+import logo from "../../images/CostLogo.png"
 
 const EMAIL_REGEX = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -98,8 +99,9 @@ const Register = () => {
     return (
         <section>
             <p ref={errRef} className={errMsg ? styles.errMsg : styles.offscreen} aria-live="assertive">{errMsg}</p>
-            <h1>Register</h1>
             <form className={styles.form} onSubmit={handleSubmit}>
+                <img src={logo} className={styles.logo}/>
+                <h2 className={styles.registerTitle}>Register</h2>
                 <div>
                     <label className={styles.label} htmlFor="email">
                         Email:
