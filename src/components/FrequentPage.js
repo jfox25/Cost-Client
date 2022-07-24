@@ -27,7 +27,14 @@ const FrequentPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const axiosPrivate = useAxiosPrivate();
-    const columns = [{name: "Business", sortable: true}, {name: "Category", sortable: true}, {name: "Is Recurring", sortable: true}, {name:"Last Used Date", sortable: true}, {name: "Next Bill Date", sortable: false}, {name: "Cost", sortable: false}]
+    const columns = [
+      { name: "Name", sortable: false },
+      { name: "Business", sortable: true },
+      { name: "Category", sortable: true },
+      { name: "Is Recurring", sortable: true },
+      { name: "Next Bill Date", sortable: false },
+      { name: "Tools", sortable: false },
+    ];
     const fetchItemHandler = async () => {
         setIsLoading(true);
         setError(null);
@@ -35,12 +42,11 @@ const FrequentPage = () => {
             const response = await axiosPrivate.get("/frequents");
             const transformedFrequents = response.data?.map(frequent => { return {
                 id : frequent.frequentId,
+                Name : frequent.name,
                 Business : frequent.businessName,
                 Category : frequent.categoryName,
                 IsRecurring : (frequent.isRecurringExpense) ? "Yes" : "No",
-                Date : dateConvertor(frequent.lastUsedDate),
                 NextBillDate : (frequent.isRecurringExpense) ? dateConvertor(frequent.lastUsedDate, frequent.billedEvery) : "-",
-                Cost : frequent.cost,
                 } 
             })
             setItems(transformedFrequents)

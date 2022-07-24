@@ -24,16 +24,15 @@ const TableControl = ({items, addFilter, url, columns, fetchItems}) => {
     {
       switch (activeFilter) {
         case ALL:
-          const allItems = items;
-          setTotalCostOfItems(gettotalCostOfItems(allItems));
+          setTotalCostOfItems(gettotalCostOfItems(items));
           break;
         case CURRENT_MONTH:
           const currentMonthItems = items.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
-          setTotalCostOfItems(gettotalCostOfItems(currentMonthItems));
+          (currentMonthItems.length === 0) ? setTotalCostOfItems(0) : setTotalCostOfItems(gettotalCostOfItems(currentMonthItems));
           break;
         case CURRENT_YEAR:
           const currentYearItems = items.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
-          setTotalCostOfItems(gettotalCostOfItems(currentYearItems));
+          (currentYearItems.length === 0) ? setTotalCostOfItems(0) : setTotalCostOfItems(gettotalCostOfItems(currentYearItems));
           break;
         default:
           setTotalCostOfItems(gettotalCostOfItems(items));

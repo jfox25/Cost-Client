@@ -1,7 +1,7 @@
 .resultsBox {
     position: absolute;
     transform: translate(50%, 0%);
-    width: 145px;
+    width: 187px;
     margin: auto;
     background-color: white;
     border: 3px solid #d2042d;
@@ -25,9 +25,9 @@
     border-top: 1px solid #999;
     border-bottom: 1px solid #999;
     padding: 3px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-size: 17px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: 18px;
 }
 .searchElement:hover {
     cursor: pointer;

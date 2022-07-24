@@ -12,7 +12,12 @@ const CategoryPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const axiosPrivate = useAxiosPrivate();
-    const columns = [ {name:"Name", sortable: false}, {name:"Expense Count", sortable: true}, {name:"Total Cost", sortable: true}]
+    const columns = [
+      { name: "Name", sortable: false },
+      { name: "Expense Count", sortable: true },
+      { name: "Total Cost", sortable: true },
+      { name: "Tools", sortable: false },
+    ];
     const fetchItemHandler = async () => {
         setIsLoading(true);
         setError(null);

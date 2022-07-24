@@ -19,6 +19,7 @@ export default function AddBusinessForm({ onClose, fetchItems }) {
             categoryId : catagoryId,
             categoryName : catagoryName
         }
+        console.log(business)
         postBusiness(business);
     }
     const postBusiness = async (business) => {

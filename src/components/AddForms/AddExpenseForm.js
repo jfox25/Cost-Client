@@ -1,16 +1,38 @@
-import React, {useRef, useState, useCallback, useEffect} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import styles from './Forms.module.css'
 import SelectInput from './SelectInput';
 import RequiredSelectInput from './RequiredSelectInput';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { motion, AnimatePresence } from 'framer-motion';
 const URL = "/expenses"
-const DIRECTIVES = [{directiveId: 1, name: "Overhead"}, {directiveId: 2, name: "Investment"}, {directiveId: 3, name: "Discretionary"}]
+
+const showMore = {
+  hidden: {
+    x: "-100%",
+    opacity: 0
+  },
+  visable: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.1,
+      type: "spring",
+      damping: 25,
+      stiffness: 500,
+    }
+  },
+  exit: {
+    x: "100%",
+    opacity: 0
+  },
+};
 
 const AddExpenseForm = ({onClose, fetchItems}) => {
     const axiosPrivate = useAxiosPrivate();
     const [categories, setCategories] = useState([]);
     const [businesses, setBusinesses] = useState([]);
     const [frequents, setFrequents] = useState([]);
+    const [directives, setDirectives] = useState([]);
     const [isRecurring, setIsRecurring] = useState(false);
     const[categoryId, setCategoryId] = useState(0);
     const[categoryName, setCategoryName] = useState(null);
@@ -61,6 +83,24 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
             setIsLoading(false)
     
         }
+        const fetchDirectiveHandler = async () => {
+          setIsLoading(true);
+          setError(null);
+          try {
+              const response = await axiosPrivate.get("/directives");
+              const transformedItems = response.data?.map(directive => { return {
+                      id : directive.directiveId,
+                      Name : directive.name,
+                  }
+              })
+              console.log(transformedItems)
+              setDirectives(transformedItems)
+          } catch (error) {
+              setError(error.message);
+          }
+          setIsLoading(false)
+  
+      }
         const fetchFrequentsHandler = async () => {
             setIsLoading(true);
             setError(null);
@@ -69,14 +109,12 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
                 const filtredData = response.data?.filter(frequent => {
                    return frequent.isRecurringExpense === false
                 })
-                console.log(filtredData)
                 const transformedItems = filtredData.map(frequent => { return {
                         id : frequent.frequentId,
                         Name : frequent.name,
                         Recurring: frequent.isRecurringExpense
                     }
                 })
-                console.log(transformedItems)
                 setFrequents(transformedItems)
             } catch (error) {
                 setError(error.message);
@@ -86,18 +124,15 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
         }
         fetchCategoriesHandler();
         fetchBusinessHandler();
+        fetchDirectiveHandler();
         fetchFrequentsHandler();
     }, []);
-    useEffect(() => {
-      console.log(categoryId)
-    }, [categoryId])
     const submitHandler = (event) => {
         event.preventDefault();
         const zero = 0;
         let expense;
         if(frequentId === zero)
         {
-          console.log(categoryId)
           expense = {
               frequentId : zero,
               categoryId : parseInt(categoryId),
@@ -117,12 +152,11 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
             date : dateRef.current.value
         }
         }
-        console.log(expense)
         postExpense(expense);
     }
     const postExpense = async (expense) => {
         try {
-            const response = await axiosPrivate.post("/expenses",
+            const response = await axiosPrivate.post(URL,
                 JSON.stringify(expense ),
                 {
                     headers: { 'Content-Type': 'application/json' },
@@ -190,12 +224,12 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
               <div>
                 <label htmlFor="directive">Directive</label>
                 <select id="directive" ref={directiveRef}>
-                  {DIRECTIVES.map((directive) => (
+                  {directives.map((directive) => (
                     <option
-                      key={directive.directiveId}
-                      value={directive.directiveId}
+                      key={directive.id}
+                      value={directive.id}
                     >
-                      {directive.name}
+                      {directive.Name}
                     </option>
                   ))}
                 </select>
@@ -228,28 +262,39 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
                   value={isRecurring}
                 />
               </div>
-              {isRecurring ? (
-                <div>
-                  <label htmlFor="billedEvery">Billed Every</label>
-                  <input
-                    ref={billedEveryRef}
-                    id="billedEvery"
-                    type="number"
-                    required={isRecurring}
-                  />
-                </div>
-              ) : null}
-              {isRecurring ? (
-                <div>
-                  <label htmlFor="frequentName">Frequent Name</label>
-                  <input
-                    ref={frequentNameRef}
-                    id="frequentName"
-                    type="text"
-                    required={isRecurring}
-                  />
-                </div>
-              ) : null}
+              <AnimatePresence
+                initial={false}
+                exitBeforeEnter={true}
+                onExitComplete={() => null}
+              >
+                {isRecurring ? (
+                  <motion.div
+                  variants={showMore}
+                  initial="hidden"
+                  animate="visable"
+                  exit="exit"
+                  >
+                        <div>
+                          <label htmlFor="billedEvery">Billed Every(Month)</label>
+                          <input
+                            ref={billedEveryRef}
+                            id="billedEvery"
+                            type="number"
+                            required={isRecurring}
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="frequentName">Frequent Name</label>
+                          <input
+                            ref={frequentNameRef}
+                            id="frequentName"
+                            type="text"
+                            required={isRecurring}
+                          />
+                        </div>
+                </motion.div>
+                ) : null}
+              </AnimatePresence>
             </>
           ) : null}
 

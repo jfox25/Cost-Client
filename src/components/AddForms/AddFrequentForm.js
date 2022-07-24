@@ -2,11 +2,33 @@ import React, {useRef, useState, useCallback, useEffect} from 'react'
 import styles from './Forms.module.css'
 import RequiredSelectInput from './RequiredSelectInput';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { motion, AnimatePresence } from 'framer-motion';
+
+const showMore = {
+    hidden: {
+      x: "-100%",
+      opacity: 0
+    },
+    visable: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.1,
+        type: "spring",
+        damping: 25,
+        stiffness: 500,
+      }
+    },
+    exit: {
+      x: "100%",
+      opacity: 0
+    },
+  };
 export default function AddFrequentForm({ onClose, fetchItems }) {
     const axiosPrivate = useAxiosPrivate();
-    const directives = [{directiveId: 1, name: "Overhead"}, {directiveId: 2, name: "Investment"}, {directiveId: 3, name: "Discretionary"}]
     const [catagories, setCatagories] = useState([]);
     const [businesses, setBusinesses] = useState([]);
+    const [directives, setDirectives] = useState([]);
     const [isRecurring, setIsRecurring] = useState(false);
     const[catagoryId, setCatagoryId] = useState(0);
     const[businessId, setBusinessId] = useState(0);
@@ -31,9 +53,9 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
                 businessId : parseInt(businessId),
                 directiveId: parseInt(directiveRef.current.value),
                 isRecurringExpense : isRecurring,
-                cost : parseInt(costRef.current.value)
-                // billedEvery : (isRecurring)? billedEveryRef : null,
-                // lastUsedDate : (isRecurring)? lastUsedDateRef : null,
+                cost : parseInt(costRef.current.value),
+                billedEvery : (isRecurring)? billedEveryRef.current.value : 0,
+                lastUsedDate : (isRecurring)? lastUsedDateRef.current.value : null,
             }
             console.log(frequent)
             postFrequent(frequent);
@@ -91,8 +113,27 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
             setIsLoading(false)
     
         }
+        const fetchDirectiveHandler = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const response = await axiosPrivate.get("/directives");
+                const transformedItems = response.data?.map(directive => { return {
+                        id : directive.directiveId,
+                        Name : directive.name,
+                    }
+                })
+                console.log(transformedItems)
+                setDirectives(transformedItems)
+            } catch (error) {
+                setError(error.message);
+            }
+            setIsLoading(false)
+    
+        }
         fetchCatagoriesHandler();
         fetchBusinessHandler();
+        fetchDirectiveHandler();
     }, []);
     const onCatagorySelectInputSubmitHandler = (value) => {
         if(value.name !== "")
@@ -127,7 +168,7 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
         <RequiredSelectInput isRequired={true} onSubmit={onBusinessSelectInputSubmitHandler} label={"Business"} items={businesses} />
         <div>
             <label htmlFor='directive'>Directive</label>
-            <select id='directive' ref={directiveRef}>{directives.map(directive => <option key={directive.directiveId} value={directive.directiveId}>{directive.name}</option>)}</select>
+            <select id='directive' ref={directiveRef}>{directives.map(directive => <option key={directive.id} value={directive.id}>{directive.Name}</option>)}</select>
         </div>
         <div>
             <label htmlFor='cost'>Cost</label>
@@ -137,16 +178,29 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
             <label htmlFor='isRecurring'>Is Recurring Expense</label>
             <input id='isRecurring' onClick={() => {setIsRecurring(!isRecurring)}} type="checkbox"  value={isRecurring}/>
         </div>
+        <AnimatePresence
+                initial={false}
+                exitBeforeEnter={true}
+                onExitComplete={() => null}
+              >
         {(isRecurring) ?
+        <motion.div
+        variants={showMore}
+        initial="hidden"
+        animate="visable"
+        exit="exit"
+        >
         <div>
             <label htmlFor='lastDateUsed'>Last Date Used</label>
             <input ref={lastUsedDateRef} id='lastDateUsed' type="date" required={isRecurring}/>
-        </div> : null}
-        {(isRecurring) ?  
-        <div>
+
+        </div> 
+         <div>
             <label htmlFor='billedEvery'>Billed Every</label>
             <input ref={billedEveryRef} id='billedEvery' type="number" required={isRecurring}/>
-        </div> : null}
+        </div>
+       </motion.div>: null}
+        </AnimatePresence>
         <button>Add Frequent</button>
     </form>
     </>

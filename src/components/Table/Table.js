@@ -12,6 +12,7 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
     const axiosPrivate = useAxiosPrivate();
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
     const [detailItemPairs, setDetailItemPairs] = useState();
+    const [detailItemId, setDetailItemId] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [refinedItems, setRefinedItems] = useState([]);
     const [itemsPerPage] = useState(10);
@@ -60,6 +61,7 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
     }
     const detailViewHandler = async (id) => {
         await fetchItem(id)
+        setDetailItemId(id)
         setIsDetailModalOpen(true)
     }
     return (
@@ -84,13 +86,13 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
                 )}
             </tbody>
         </table>
-        {(displayItems.length >= itemsPerPage ) ? <PaginationControls itemsPerPage={itemsPerPage} totalItems={displayItems.length} paginate={paginate} currentPage={currentPage}/> : null}
+        {(displayItems.length > itemsPerPage ) ? <PaginationControls itemsPerPage={itemsPerPage} totalItems={displayItems.length} paginate={paginate} currentPage={currentPage}/> : null}
         <AnimatePresence
             initial={false}
             exitBeforeEnter={true}
             onExitComplete={() => null}
         >
-            {isDetailModalOpen && <Modal content={<ItemDetail itemPairs={detailItemPairs}/>} isModalOpen={isDetailModalOpen} onClose={() => setIsDetailModalOpen(false)}/>}
+            {isDetailModalOpen && <Modal content={<ItemDetail title={url.substring(1)} id={detailItemId} itemPairs={detailItemPairs}/>} isModalOpen={isDetailModalOpen} onClose={() => setIsDetailModalOpen(false)}/>}
         </AnimatePresence>
         </>
     )
