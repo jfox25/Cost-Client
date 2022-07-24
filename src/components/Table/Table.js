@@ -6,6 +6,7 @@ import ItemDetail from "./ItemDetail";
 import Modal from "../Modal/Modal";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import PaginationControls from "./PaginationControls";
+import { AnimatePresence } from "framer-motion";
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, columns, activeColumn}) => {
     const axiosPrivate = useAxiosPrivate();
@@ -59,8 +60,8 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
         }
     }
     const detailViewHandler = async (id) => {
-        setIsDetailModalOpen(true)
         await fetchItem(id)
+        setIsDetailModalOpen(true)
     }
     
     return (
@@ -83,7 +84,13 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
             </tbody>
         </table>
         <PaginationControls itemsPerPage={itemsPerPage} totalItems={displayItems.length} paginate={paginate} currentPage={currentPage} />
-        <Modal content={<ItemDetail itemPairs={detailItemPairs}/>} isModalOpen={isDetailModalOpen} onClose={() => setIsDetailModalOpen(false)}/>
+        <AnimatePresence
+            initial={false}
+            exitBeforeEnter={true}
+            onExitComplete={() => null}
+        >
+            {isDetailModalOpen && <Modal content={<ItemDetail itemPairs={detailItemPairs}/>} isModalOpen={isDetailModalOpen} onClose={() => setIsDetailModalOpen(false)}/>}
+        </AnimatePresence>
         </>
     )
 }

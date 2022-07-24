@@ -1,3 +1,14 @@
+/* .modal {
+    width: clamp(50%, 700px, 90%);
+    height: min(50%, 300px);
+   
+    margin: auto;
+    background-color: whitesmoke;
+    z-index: 1000;
+    border-radius: 10px;
+    padding: 5px;
+    text-align: center;
+} */
 .modal {
     position: fixed;
     top: 50%;
@@ -18,10 +29,37 @@
     background-color: rgba(0,0,0,.7);
     z-index: 1000;
 }
+/* .overlayStyles {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,.45);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
 .closeButton {
     float: right;
 }
 .modalContent {
     padding: 30px;
     padding-bottom: 0px;
+}
+.closeAnimation {
+    animation-name: modalClose;
+    animation-duration: 1s;
+}
+
+@keyframes modalShow {
+    from {top: 0%;}
+    to {top : 50%;}
+}
+
+@keyframes modalClose {
+    from {top: 50%;}
+    to {top : 0%;}
 }
