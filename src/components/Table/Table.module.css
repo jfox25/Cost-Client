@@ -1,6 +1,7 @@
 .table {
     width: 90%;
     margin: auto;
+    margin-bottom: 50px;
 }
 
 /* Pagination */
@@ -29,4 +30,16 @@
  }
  .active {
     text-decoration: underline;
+ }
+ .noItems {
+    padding-top: 30px;
+    height: 150px;
+ }
+ .noItems td{
+    color: #d2042d;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    padding: 0;
  }

@@ -54,7 +54,7 @@ const FrequentPage = () => {
     useEffect(() => {
         fetchItemHandler();
     }, []);
-    let content = <TableControl url="/frequents" addFilter={false} columns={columns} items={items} />;
+    let content = <TableControl url="/frequents" addFilter={false} columns={columns} items={items} fetchItems={fetchItemHandler}/>;
     if(error) {
         content = <p>{error}</p>
     }

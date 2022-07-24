@@ -8,10 +8,9 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import PaginationControls from "./PaginationControls";
 import { AnimatePresence } from "framer-motion";
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, columns, activeColumn}) => {
+const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, columns, activeColumn, onItemRowDelete}) => {
     const axiosPrivate = useAxiosPrivate();
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-    const [detailItemId, setDetailItemId] = useState();
     const [detailItemPairs, setDetailItemPairs] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [refinedItems, setRefinedItems] = useState([]);
@@ -63,7 +62,6 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
         await fetchItem(id)
         setIsDetailModalOpen(true)
     }
-    
     return (
         <>
         <table className={styles.table}>
@@ -71,19 +69,22 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
                 <TableHeading columns={columns} activeColumn={activeColumn} onColumnClick = {sortClickHandler} />
             </thead>
             <tbody>
-                {newItemGroups.map((itemGroup, index) => {
-                    if(activeColumn.includes("Date"))
-                    {
-                        const groupName = `${MONTHS[new Date(buildDateString(itemGroup[0].Date)).getMonth()]}, ${new Date(itemGroup[0].Date).getFullYear()}`;
-                        return <TableGroup rowClickHandler={detailViewHandler} totalCostOfItems={totalCostOfItems} searchValue={searchValue} items = {itemGroup} groupName = {groupName} key={index} columns = {columns} activeColumn={activeColumn} /> 
-                    }else {
-                        return <TableGroup rowClickHandler={detailViewHandler}  totalCostOfItems={totalCostOfItems} searchValue={searchValue} items = {itemGroup} groupName = {itemGroup[0][activeColumn]} key={index} activeColumn={activeColumn} /> 
-                    }
-                    
-                    })}
+                {(newItemGroups.length === 0 ? <tr className={styles.noItems}><td>No Items Found</td></tr> : (
+                    newItemGroups.map((itemGroup, index) => {
+                        if(activeColumn.includes("Date"))
+                        {
+                            const groupName = `${MONTHS[new Date(buildDateString(itemGroup[0].Date)).getMonth()]}, ${new Date(itemGroup[0].Date).getFullYear()}`;
+                            return <TableGroup deleteIsOn={columns[columns.length -1].name === "Tools"} onRowDelete={onItemRowDelete} rowClickHandler={detailViewHandler} totalCostOfItems={totalCostOfItems} searchValue={searchValue} items = {itemGroup} groupName = {groupName} key={index} columns = {columns} activeColumn={activeColumn} /> 
+                        }else {
+                            return <TableGroup deleteIsOn={columns[columns.length -1].name === "Tools"}  onRowDelete={onItemRowDelete} rowClickHandler={detailViewHandler}  totalCostOfItems={totalCostOfItems} searchValue={searchValue} items = {itemGroup} groupName = {itemGroup[0][activeColumn]} key={index} activeColumn={activeColumn} /> 
+                        }
+                        
+                        })
+                    )
+                )}
             </tbody>
         </table>
-        <PaginationControls itemsPerPage={itemsPerPage} totalItems={displayItems.length} paginate={paginate} currentPage={currentPage} />
+        {(displayItems.length >= itemsPerPage ) ? <PaginationControls itemsPerPage={itemsPerPage} totalItems={displayItems.length} paginate={paginate} currentPage={currentPage}/> : null}
         <AnimatePresence
             initial={false}
             exitBeforeEnter={true}

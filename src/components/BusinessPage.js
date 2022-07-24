@@ -13,7 +13,13 @@ const BusinessPage = () => {
     const location = useLocation();
     const axiosPrivate = useAxiosPrivate();
     
-    const columns = [ {name:"Name", sortable: false}, {name:"Expense Count", sortable: true}, {name:"Total Cost", sortable: true}, {name:"Category", sortable: true}]
+    const columns = [
+      { name: "Name", sortable: false },
+      { name: "Expense Count", sortable: true },
+      { name: "Total Cost", sortable: true },
+      { name: "Category", sortable: true },
+      {name: "Tools", sortable: false}
+    ];
     const fetchItemHandler = async () => {
         setIsLoading(true);
         setError(null);
@@ -37,7 +43,7 @@ const BusinessPage = () => {
     useEffect(() => {
         fetchItemHandler();
     }, []);
-    let content = <TableControl url="/business" columns={columns} items={items} />;
+    let content = <TableControl url="/business" columns={columns} items={items} fetchItems={fetchItemHandler}/>;
     if(error) {
         content = <p>{error}</p>
     }

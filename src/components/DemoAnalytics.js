@@ -35,7 +35,7 @@ const DemoAnalytics = () => {
     useEffect(() => {
         fetchItemHandler();
     }, []);
-    let content = <TableControl url="/analytic/generalAnalytics" columns={columns} items={items} />;
+    let content = <TableControl url="/analytic/generalAnalytics" columns={columns} items={items} fetchItems={fetchItemHandler}/>;
     if(error) {
         content = <p>{error}</p>
     }

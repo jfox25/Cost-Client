@@ -28,7 +28,14 @@ const ExpensePage = () => {
     const location = useLocation();
 
     const axiosPrivate = useAxiosPrivate();
-    const columns = [{name: "Business", sortable: true}, {name: "Category", sortable: true}, {name: "Directive", sortable: true}, {name: "Date", sortable: true}, {name: "Cost", sortable: false}]
+    const columns = [
+      { name: "Business", sortable: true },
+      { name: "Category", sortable: true },
+      { name: "Directive", sortable: true },
+      { name: "Date", sortable: true },
+      { name: "Cost", sortable: false },
+      {name: "Tools", sortable: false}
+    ];
     const fetchExpensesHandler = async () => {
         setIsLoading(true);
         setError(null);
@@ -56,15 +63,21 @@ const ExpensePage = () => {
     useEffect(() => {
         fetchExpensesHandler();
     }, []);
-    let content = <TableControl url="/expenses" columns={columns} items={expenses} addFilter={true} />;
-    if(error) {
-        content = <p>{error}</p>
+    const changeLoading = (value) => {
+        setIsLoading(value)
     }
-    if(isloading) {
-        content = <p>Loading ...</p>
+    const changeError = (error) => {
+        setError(error)
     }
-    return (
-        <div>
+    let content = <TableControl url="/expenses" columns={columns} items={expenses} addFilter={true} fetchItems={fetchExpensesHandler} />
+        if(error) {
+            content = <p>{error}</p>
+        }
+        if(isloading) {
+            content = <p>Loading ...</p>
+        }
+        return (
+            <div>
             <h1>Expenses</h1>
             {content}
             <AddControl content={<AddExpenseForm fetchItems={fetchExpensesHandler}/>}/>

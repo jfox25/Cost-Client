@@ -66,11 +66,17 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
             setError(null);
             try {
                 const response = await axiosPrivate.get("/frequents");
-                const transformedItems = response.data?.map(frequent => { return {
+                const filtredData = response.data?.filter(frequent => {
+                   return frequent.isRecurringExpense === false
+                })
+                console.log(filtredData)
+                const transformedItems = filtredData.map(frequent => { return {
                         id : frequent.frequentId,
                         Name : frequent.name,
+                        Recurring: frequent.isRecurringExpense
                     }
                 })
+                console.log(transformedItems)
                 setFrequents(transformedItems)
             } catch (error) {
                 setError(error.message);
@@ -82,12 +88,16 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
         fetchBusinessHandler();
         fetchFrequentsHandler();
     }, []);
+    useEffect(() => {
+      console.log(categoryId)
+    }, [categoryId])
     const submitHandler = (event) => {
         event.preventDefault();
         const zero = 0;
         let expense;
         if(frequentId === zero)
         {
+          console.log(categoryId)
           expense = {
               frequentId : zero,
               categoryId : parseInt(categoryId),
@@ -98,7 +108,7 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
               date : dateRef.current.value,
               isRecurringExpense : isRecurring,
               cost : parseInt(costRef.current.value),
-              billedEvery : (isRecurring)? parseInt(billedEveryRef.current.value) : null,
+              billedEvery : (isRecurring)? parseInt(billedEveryRef.current.value) : 0,
               frequentName : (isRecurring)? frequentNameRef.current.value : null
           }
         } else {
@@ -107,6 +117,7 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
             date : dateRef.current.value
         }
         }
+        console.log(expense)
         postExpense(expense);
     }
     const postExpense = async (expense) => {
@@ -127,9 +138,9 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
     }
 
     const onCategorySelectInputSubmitHandler = (value) => {
-        if(value.name !== "")
-        {
-            setCategoryId(value.id)
+      console.log(value.id)
+      if(value.name !== ""){
+            setCategoryId(parseInt(value.id))
             setCategoryName(value.name) 
         }else {
             setCategoryId(0)
@@ -139,7 +150,7 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
     const onBusinessSelectInputSubmitHandler = (value) => {
         if(value.name !== "")
         {
-            setBusinessId(value.id)
+            setBusinessId(parseInt(value.id))
             setBusinessName(value.name) 
         }else {
             setBusinessId(0)

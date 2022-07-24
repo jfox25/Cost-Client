@@ -3,11 +3,13 @@ import {useState, useEffect, useRef} from 'react';
 import TableFilter from "./TableFilter";
 import TableSearch from "./TableSearch";
 import styles from './TableControl.module.css'
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import PaginationControls from "./PaginationControls";
 const ALL = "all";
 const CURRENT_MONTH = "currentMonth";
 const CURRENT_YEAR = "currentYear"
-const TableControl = ({items, addFilter, url, columns}) => {
+const TableControl = ({items, addFilter, url, columns, fetchItems}) => {
+  const axiosPrivate = useAxiosPrivate();
   const [activeColumn, setActiveColumn] = useState("");
   const [activeFilter, setActiveFilter] = useState(ALL);
   const [searchTableValue, setSearchTableValue] = useState("");
@@ -95,6 +97,19 @@ const TableControl = ({items, addFilter, url, columns}) => {
           return filteredItems;
         }
     }
+    const deleteItemHandler = async (id) => {
+      console.log(id)
+      await deleteItem(id)
+      await fetchItems();
+    }
+    const deleteItem = async (itemId) => {
+      try {
+        const response = await axiosPrivate.delete(`${url}/${itemId}`);
+      }
+      catch(error) {
+        console.log(error)
+      }
+    }
   return (
     <div>
       <div className={styles.filters}>
@@ -110,6 +125,7 @@ const TableControl = ({items, addFilter, url, columns}) => {
         </div>
       </div>
       <Table
+        onItemRowDelete = {deleteItemHandler}
         url={url}
         totalCostOfItems={totalCostOfItems}
         searchValue={searchTableValue}

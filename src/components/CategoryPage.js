@@ -35,7 +35,7 @@ const CategoryPage = () => {
     useEffect(() => {
         fetchItemHandler();
     }, []);
-    let content = <TableControl url="/categories" columns={columns} items={items} />;
+    let content = <TableControl url="/categories" columns={columns} items={items} fetchItems={fetchItemHandler}/>;
     if(error) {
         content = <p>{error}</p>
     }
