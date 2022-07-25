@@ -3,6 +3,7 @@ import AddCatagoryForm from "./AddForms/AddCatagoryForm";
 import TableControl from "./Table/TableControl"
 import AddControl  from "./Add/AddControl";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import Leaderboard from "./Leaderboard/Leaderboard";
 import  { useNavigate, useLocation } from "react-router-dom";
 
 const CategoryPage = () => {
@@ -40,7 +41,18 @@ const CategoryPage = () => {
     useEffect(() => {
         fetchItemHandler();
     }, []);
-    let content = <TableControl url="/categories" columns={columns} items={items} fetchItems={fetchItemHandler}/>;
+    const removeItem = (id) => {
+        const newItems = items.filter(item => {
+            return item.id !== id
+        })
+        setItems(newItems)
+    }
+    let content = (
+        <>
+            <TableControl url="/categories" columns={columns} items={items} removeItem={removeItem}/>
+            <Leaderboard items={items}/>
+        </>
+    );
     if(error) {
         content = <p>{error}</p>
     }

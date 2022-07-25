@@ -3,6 +3,7 @@ import TableControl from "./Table/TableControl"
 import AddControl from './Add/AddControl'
 import AddBusinessForm from "./AddForms/AddBusinessForm";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import Leaderboard from "./Leaderboard/Leaderboard";
 import  { useNavigate, useLocation } from "react-router-dom";
 
 const BusinessPage = () => {
@@ -43,7 +44,18 @@ const BusinessPage = () => {
     useEffect(() => {
         fetchItemHandler();
     }, []);
-    let content = <TableControl url="/business" columns={columns} items={items} fetchItems={fetchItemHandler}/>;
+    const removeItem = (id) => {
+        const newItems = items.filter(item => {
+            return item.id !== id
+        })
+        setItems(newItems)
+    }
+    let content = (
+        <>
+            <TableControl url="/business" columns={columns} items={items} removeItem={removeItem}/>
+            <Leaderboard items={items}/>
+        </>
+    );
     if(error) {
         content = <p>{error}</p>
     }

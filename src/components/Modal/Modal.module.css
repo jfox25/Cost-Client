@@ -44,6 +44,16 @@
 } */
 .closeButton {
     float: right;
+    border: none;
+    font-size: 22px;
+    background-color: whitesmoke;
+    margin-right: 5px;
+    margin-top: 5px;
+    transition: all 0.3s;
+}
+.closeButton:hover {
+    color: #d2042d;
+    cursor: pointer;
 }
 .modalContent {
     padding: 30px;

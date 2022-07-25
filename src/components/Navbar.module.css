@@ -44,6 +44,9 @@
     margin-top: 10px;
     margin-right: 10px;
 }
+.accountInfo:hover {
+    cursor: pointer;
+}
 .accountInfo div {
     display: flex;
     flex-direction: column;

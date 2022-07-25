@@ -1,0 +1,94 @@
+.rankPropertyControl {
+    width: 450px;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 5px;
+    font-size: 18px;
+}
+.rankPropertyControl p{
+    color: #d2042d;
+    font-weight: 700;
+    font-size: 20px;
+    margin-right: 30px;
+}
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.buttonGroup button {
+    padding: 10px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-right: 10px;
+    transition: all 0.4s;
+    font-weight: bold;
+}
+.button:hover {
+    background-color: whitesmoke;
+    border: 2px solid #d2042d;
+    cursor: pointer;
+    color: #d2042d;
+}
+
+.leaderboard {
+    border: 2px solid #333;
+    border-radius: 10px;
+    width: 600px;
+    margin: auto;
+    padding-left: 10px;
+    padding-top: 5px;
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+.leaderboardItem {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    height: 70px;
+    border-bottom: 1px solid #888;
+    font-weight: 600;
+}
+.leaderboardNumber {
+    text-align: left;
+    color: #d2042d;
+    width: 50px;
+    border-right: 1px solid #888;
+    padding-top: 20px;
+    margin: 0;
+    padding-left: 10px;
+}
+.leaderboardValue {
+    margin: 0;
+    width: 300px;
+    padding-top: 20px;
+    margin-left: 30px;
+}
+.rankProperty {
+    padding-top: 20px;
+    margin: 0;
+    width: 100px;
+    color: blue;
+}
+.active {
+    background-color: #d2042d;
+    color: #333;
+}
+.active:hover {
+    background-color: #d2042d;
+    border: 2px solid #d2042d;
+    cursor: no-drop;
+}
+.leaderboardIcon {
+    display: inline;
+    margin-right: 10px;
+    font-size: 20px;
+}
+.leaderboardHeading{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

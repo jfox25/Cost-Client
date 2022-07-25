@@ -8,7 +8,7 @@ import PaginationControls from "./PaginationControls";
 const ALL = "all";
 const CURRENT_MONTH = "currentMonth";
 const CURRENT_YEAR = "currentYear"
-const TableControl = ({items, addFilter, url, columns, fetchItems}) => {
+const TableControl = ({items, addFilter, url, columns, fetchItems, removeItem}) => {
   const axiosPrivate = useAxiosPrivate();
   const [activeColumn, setActiveColumn] = useState("");
   const [activeFilter, setActiveFilter] = useState(ALL);
@@ -99,7 +99,7 @@ const TableControl = ({items, addFilter, url, columns, fetchItems}) => {
     const deleteItemHandler = async (id) => {
       console.log(id)
       await deleteItem(id)
-      await fetchItems();
+      removeItem(id)
     }
     const deleteItem = async (itemId) => {
       try {

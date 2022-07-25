@@ -5,7 +5,7 @@ import {Routes, Route } from "react-router-dom";
 import Layout from './components/Layout';
 import ExpensePage from './components/ExpensePage'
 import FrequentPage from "./components/FrequentPage";
-import DemoAnalytics from "./components/DemoAnalytics";
+import AnalyticPage from "./components/AnalyticPage";
 // import Navbar from "./Navbar";
 import BusinessPage from "./components/BusinessPage";
 import CategoryPage from "./components/CategoryPage";
@@ -39,7 +39,7 @@ function App() {
             <Route path="businesses" element={<BusinessPage />} />
             <Route path="categories" element={<CategoryPage />} />
             <Route path="directives" element={<DirectivePage />} />
-            <Route path="analytics" element={<DemoAnalytics />} />
+            <Route path="analytics" element={<AnalyticPage />} />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.admin]} />}>

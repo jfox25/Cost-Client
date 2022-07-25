@@ -63,13 +63,14 @@ const ExpensePage = () => {
     useEffect(() => {
         fetchExpensesHandler();
     }, []);
-    const changeLoading = (value) => {
-        setIsLoading(value)
+    const removeItem = (id) => {
+        const newExpenses = expenses.filter(item => {
+            return item.id !== id
+        })
+        setExpenses(newExpenses)
     }
-    const changeError = (error) => {
-        setError(error)
-    }
-    let content = <TableControl url="/expenses" columns={columns} items={expenses} addFilter={true} fetchItems={fetchExpensesHandler} />
+   
+    let content = <TableControl url="/expenses" columns={columns} items={expenses} addFilter={true} removeItem={removeItem} />
         if(error) {
             content = <p>{error}</p>
         }
