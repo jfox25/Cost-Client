@@ -4,10 +4,10 @@ const TableRow = (props) => {
     const propertyValues = getProperties(item)
     const getHighlightedText = (text) => {
         let value;
-        if(Number.isInteger(text))
+        if(typeof text === "number")
         {
             value = text.toString();
-        }else {
+        }else{
             value = text
         }
         const parts = value.split(new RegExp(`(${props.searchValue})`, 'gi'));

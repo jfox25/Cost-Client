@@ -7,7 +7,8 @@ const GroupHeading = (props) => {
         return props.groupName === undefined;
     }
     const totalCostOfItems = (items) => {
-        return items.reduce(function (acc, obj) { return acc + obj.Cost; }, 0);
+        const number = items.reduce(function (acc, obj) { return acc + obj.Cost; }, 0);
+        return Math.round(number * 100) / 100;
     }
     const getPercentageOfTotalCost = (totalCost, groupCost) => {
         return Math.ceil(((100 * groupCost) / totalCost) * 100) / 100;

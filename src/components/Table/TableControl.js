@@ -4,18 +4,45 @@ import TableFilter from "./TableFilter";
 import TableSearch from "./TableSearch";
 import styles from './TableControl.module.css'
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import  { useNavigate, useLocation } from "react-router-dom";
+import Modal from "../Modal/Modal";
+import { AnimatePresence } from "framer-motion";
 import PaginationControls from "./PaginationControls";
 const ALL = "all";
 const CURRENT_MONTH = "currentMonth";
 const CURRENT_YEAR = "currentYear"
-const TableControl = ({items, addFilter, url, columns, fetchItems, removeItem}) => {
+const TableControl = ({items, addFilter, url, columns, removeItem}) => {
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [activeColumn, setActiveColumn] = useState("");
   const [activeFilter, setActiveFilter] = useState(ALL);
   const [searchTableValue, setSearchTableValue] = useState("");
   const [totalCostOfItems, setTotalCostOfItems] = useState(0);
-
+  const [isloading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const decipherError = (error) => {
+    if(error.response.status === 404)
+    {
+      setError("Unable to connect with Server. Please try again.");
+    }else if(error.response.status === 401)
+    {
+      navigate('/login', { state : {from: location, message: "Session has expired"}, replace : true});
+    }else if(error.response.data !== "") {
+      setError(error.response?.data)
+    }else {
+      setError("Error Loading Resources")
+    }
+  }
   const prevActiveColumn = useRef();
+  useEffect(() => {
+    if(error) {
+      setIsModalOpen(true);
+    }else {
+      setIsModalOpen(false);
+    }
+  }, [error])
   useEffect(() => {
     prevActiveColumn.current = activeColumn;
   }, [activeColumn]); 
@@ -58,7 +85,8 @@ const TableControl = ({items, addFilter, url, columns, fetchItems, removeItem}) 
   const gettotalCostOfItems = (filteredItems) => {
     if(filteredItems[0].hasOwnProperty("Cost"))
     {
-      return filteredItems.reduce(function (acc, obj) { return acc + obj.Cost; }, 0);
+      const number = filteredItems.reduce(function (acc, obj) { return acc + obj.Cost; }, 0);
+      return Math.round(number * 100) / 100
     }else {
       return 0;
     }
@@ -97,20 +125,21 @@ const TableControl = ({items, addFilter, url, columns, fetchItems, removeItem}) 
         }
     }
     const deleteItemHandler = async (id) => {
-      console.log(id)
-      await deleteItem(id)
-      removeItem(id)
+      await deleteItem(id);
     }
     const deleteItem = async (itemId) => {
+      setError(null);
       try {
+        console.log("TRYING")
         const response = await axiosPrivate.delete(`${url}/${itemId}`);
+        removeItem(itemId);
       }
       catch(error) {
-        console.log(error)
+        decipherError(error);
       }
     }
-  return (
-    <div>
+    let content = (
+      <>
       <div className={styles.filters}>
         <h3>Filters</h3>
         <div>
@@ -138,6 +167,31 @@ const TableControl = ({items, addFilter, url, columns, fetchItems, removeItem}) 
         columns={columns}
         activeColumn={activeColumn}
       />
+      </>
+    )
+    if(isloading) {
+      content = <p>Loading ...</p>
+    }
+  return (
+    <div>
+      {content}
+      <AnimatePresence
+            initial={false}
+            exitBeforeEnter={true}
+            onExitComplete={() => null}
+        >
+        {isModalOpen && <Modal
+                isModalOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                content={
+                  <div className={styles.errorModal}>
+                    <h1>Error</h1>
+                    <hr />
+                    <p className={`errorDisplay`}>{error}</p>
+                  </div>
+                }
+              />}
+        </AnimatePresence>
     </div>
   );
 }

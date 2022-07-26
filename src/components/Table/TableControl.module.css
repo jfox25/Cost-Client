@@ -11,3 +11,20 @@
     align-items: center;
     justify-content: space-evenly;
 }
+.errorModal {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 5px;
+    width: 400px;
+}
+.errorModal hr{
+    margin-bottom: 20px;
+}
+.errorModal h1 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+.errorModal p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}

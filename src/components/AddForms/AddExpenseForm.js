@@ -4,6 +4,7 @@ import SelectInput from './SelectInput';
 import RequiredSelectInput from './RequiredSelectInput';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { motion, AnimatePresence } from 'framer-motion';
+import  { useNavigate, useLocation } from "react-router-dom";
 const URL = "/expenses"
 
 const showMore = {
@@ -26,9 +27,15 @@ const showMore = {
     opacity: 0
   },
 };
+const ZERO = 0;
 
 const AddExpenseForm = ({onClose, fetchItems}) => {
+    const today = new Date();
+    today.setMonth(today.getMonth()+1)
+    const newDate = new Date(`${today.getFullYear()}-${today.getMonth() + 1}-31`).toISOString().substring(0,10)
     const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
+    const location = useLocation();
     const [categories, setCategories] = useState([]);
     const [businesses, setBusinesses] = useState([]);
     const [frequents, setFrequents] = useState([]);
@@ -44,117 +51,114 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
     const billedEveryRef = useRef()
     const frequentNameRef = useRef()
     const dateRef = useRef()
-    const [isloading, setIsLoading] = useState(false);
+    const [isloading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchCategoriesHandler = async () => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const response = await axiosPrivate.get("/categories");
-                
-                const transformedItems = response.data?.map(category => { return {
-                        id : category.categoryId,
-                        Name : category.name,
-                    }
-                })
-                setCategories(transformedItems)
-            } catch (error) {
-                setError(error.message);
-            }
-            setIsLoading(false)
-    
-        }
-        const fetchBusinessHandler = async () => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const response = await axiosPrivate.get("/business");
-                const transformedItems = response.data?.map(business => { return {
-                        id : business.businessId,
-                        Name : business.name,
-                    }
-                })
-                setBusinesses(transformedItems)
-            } catch (error) {
-                setError(error.message);
-            }
-            setIsLoading(false)
-    
-        }
-        const fetchDirectiveHandler = async () => {
-          setIsLoading(true);
-          setError(null);
-          try {
-              const response = await axiosPrivate.get("/directives");
-              const transformedItems = response.data?.map(directive => { return {
-                      id : directive.directiveId,
-                      Name : directive.name,
-                  }
-              })
-              console.log(transformedItems)
-              setDirectives(transformedItems)
-          } catch (error) {
-              setError(error.message);
-          }
-          setIsLoading(false)
-  
+    const [disableForm, setDisableForm] = useState(false);
+    const decipherError = (error) => {
+      if(error.response.status === 404)
+      {
+        setError("Unable to connect with Server. Please try again.");
+        setDisableForm(true);
+      }else if(error.response.status === 401)
+      {
+        navigate('/login', { state : {from: location, message: "Session has expired"}, replace : true});
+      }else if(error.response.data !== "") {
+        setError(error.response?.data)
+      }else {
+        setError("Error Loading Resources")
+        setDisableForm(true);
       }
-        const fetchFrequentsHandler = async () => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const response = await axiosPrivate.get("/frequents");
-                const filtredData = response.data?.filter(frequent => {
-                   return frequent.isRecurringExpense === false
-                })
-                const transformedItems = filtredData.map(frequent => { return {
-                        id : frequent.frequentId,
-                        Name : frequent.name,
-                        Recurring: frequent.isRecurringExpense
-                    }
-                })
-                setFrequents(transformedItems)
-            } catch (error) {
-                setError(error.message);
+    }
+    useEffect(() => {
+      const fetchData = async () => {
+        setError(null);
+        setIsLoading(true)
+        try {
+          await fetchCategoriesHandler();
+          await fetchBusinessHandler();
+          await fetchDirectiveHandler();
+          await fetchFrequentsHandler();
+        } catch(error){
+          decipherError(error)
+        }
+        finally {
+          setIsLoading(false)
+        }
+      }
+      const fetchCategoriesHandler = async () => {
+        const response = await axiosPrivate.get("/categories");
+        
+        const transformedItems = response.data?.map(category => { return {
+                id : category.categoryId,
+                Name : category.name,
             }
-            setIsLoading(false)
-    
-        }
-        fetchCategoriesHandler();
-        fetchBusinessHandler();
-        fetchDirectiveHandler();
-        fetchFrequentsHandler();
+        })
+        setCategories(transformedItems)
+      }
+      const fetchBusinessHandler = async () => {
+        const response = await axiosPrivate.get("/business");
+        const transformedItems = response.data?.map(business => { return {
+                id : business.businessId,
+                Name : business.name,
+            }
+        })
+        setBusinesses(transformedItems)
+      }
+      const fetchDirectiveHandler = async () => {
+        const response = await axiosPrivate.get("/directives");
+        const transformedItems = response.data?.map(directive => { return {
+                id : directive.directiveId,
+                Name : directive.name,
+            }
+        })
+        setDirectives(transformedItems)
+      }
+      const fetchFrequentsHandler = async () => {
+        const response = await axiosPrivate.get("/frequents");
+        const filtredData = response.data?.filter(frequent => {
+            return frequent.isRecurringExpense === false
+        })
+        const transformedItems = filtredData.map(frequent => { return {
+                id : frequent.frequentId,
+                Name : frequent.name,
+                Recurring: frequent.isRecurringExpense
+            }
+        })
+        setFrequents(transformedItems)
+      }
+      fetchData();
     }, []);
-    const submitHandler = (event) => {
-        event.preventDefault();
-        const zero = 0;
-        let expense;
-        if(frequentId === zero)
-        {
-          expense = {
-              frequentId : zero,
-              categoryId : parseInt(categoryId),
-              businessId : parseInt(businessId),
-              businessName : businessName,
-              categoryName : categoryName,
-              directiveId: parseInt(directiveRef.current.value),
-              date : dateRef.current.value,
-              isRecurringExpense : isRecurring,
-              cost : parseInt(costRef.current.value),
-              billedEvery : (isRecurring)? parseInt(billedEveryRef.current.value) : 0,
-              frequentName : (isRecurring)? frequentNameRef.current.value : null
-          }
-        } else {
-          expense = {
-            frequentId : parseInt(frequentId),  
-            date : dateRef.current.value
+    const submitHandler = async (event) => {
+      setDisableForm(true);
+      event.preventDefault();
+      let expense;
+      if(frequentId === ZERO)
+      {
+        expense = {
+            frequentId : ZERO,
+            categoryId : parseInt(categoryId),
+            businessId : parseInt(businessId),
+            businessName : businessName,
+            categoryName : categoryName,
+            directiveId: parseInt(directiveRef.current.value),
+            date : dateRef.current.value,
+            isRecurringExpense : isRecurring,
+            cost : parseFloat(costRef.current.value),
+            billedEvery : (isRecurring)? parseInt(billedEveryRef.current.value) : ZERO,
+            frequentName : (isRecurring)? frequentNameRef.current.value : null
         }
-        }
-        postExpense(expense);
+      } else {
+        expense = {
+          frequentId : parseInt(frequentId),  
+          date : dateRef.current.value
+      }
+      }
+      await postExpense(expense);
+      setDisableForm(false);
     }
     const postExpense = async (expense) => {
+      setIsLoading(true);
+      setError(null);
         try {
             const response = await axiosPrivate.post(URL,
                 JSON.stringify(expense ),
@@ -167,12 +171,14 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
             onClose();
         }
         catch(error) {
-            console.error(error)
+          decipherError(error);
+        }
+        finally {
+          setIsLoading(false);
         }
     }
 
     const onCategorySelectInputSubmitHandler = (value) => {
-      console.log(value.id)
       if(value.name !== ""){
             setCategoryId(parseInt(value.id))
             setCategoryName(value.name) 
@@ -199,11 +205,14 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
             setFrequentId(0)
         }
     }
-
-    return (
+    const clearErrors = () => {
+      if(!disableForm){
+        setError(null);
+      }
+    }
+    let content = (
       <>
-        <h2>Add an Expense</h2>
-        <form className={styles.form} onSubmit={submitHandler}>
+        <form className={styles.form} onSubmit={submitHandler} onChange={clearErrors}>
           <RequiredSelectInput
             onSubmit={onFrequentSelectInputSubmitHandler}
             label={"Frequent"}
@@ -216,6 +225,7 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
                   ref={dateRef}
                   id="date"
                   type="date"
+                  max={newDate}
                   required
                   />
             </div>
@@ -249,7 +259,7 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
             
               <div>
                 <label htmlFor="cost">Cost</label>
-                <input ref={costRef} id="cost" type="number" min="0" required />
+                <input step=".01" ref={costRef} id="cost" type="number" min="0" max="10000000" required />
               </div>
               <div>
                 <label htmlFor="isRecurring">Is Recurring Expense</label>
@@ -278,6 +288,7 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
                           <label htmlFor="billedEvery">Billed Every(Month)</label>
                           <input
                             ref={billedEveryRef}
+                            min="1"
                             id="billedEvery"
                             type="number"
                             required={isRecurring}
@@ -286,6 +297,7 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
                         <div>
                           <label htmlFor="frequentName">Frequent Name</label>
                           <input
+                            maxLength="25"
                             ref={frequentNameRef}
                             id="frequentName"
                             type="text"
@@ -298,9 +310,19 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
             </>
           ) : null}
 
-          <button>Add Expense</button>
+          <button disabled={disableForm}>Add Expense</button>
         </form>
       </>
+    )
+    if(isloading) {
+      content = <p>Loading ...</p>
+    }
+    return (
+      <div>
+        <h2>Add an Expense</h2>
+        {(error) ? <p className='errorDisplay'>{error}</p> : null}
+        {content}
+      </div>
     );
 }
 

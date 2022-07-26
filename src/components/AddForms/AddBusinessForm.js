@@ -2,16 +2,36 @@ import React, {useRef, useState, useCallback, useEffect} from 'react'
 import styles from './Forms.module.css'
 import SelectInput from './SelectInput';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import  { useNavigate, useLocation } from "react-router-dom";
 export default function AddBusinessForm({ onClose, fetchItems }) {
     const axiosPrivate = useAxiosPrivate();
     const [catagories, setCatagories] = useState([]);
-    const [isloading, setIsLoading] = useState(false);
     const[catagoryId, setCatagoryId] = useState(0);
     const[catagoryName, setCatagoryName] = useState(null);
+    const [isloading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [disableForm, setDisableForm] = useState(false);
+    const decipherError = (error) => {
+        if(error.response.status === 404)
+        {
+          setError("Unable to connect with Server. Please try again.");
+          setDisableForm(true);
+        }else if(error.response.status === 401)
+        {
+          navigate('/login', { state : {from: location, message: "Session has expired"}, replace : true});
+        }else if(error.response.data !== "") {
+          setError(error.response?.data)
+        }else {
+          setError("Error Loading Resources")
+          setDisableForm(true);
+        }
+      }
     const nameRef = useRef('')
+    const navigate = useNavigate();
+    const location = useLocation();
     
     const submitHandler = (event) => {
+        setDisableForm(true);
         event.preventDefault();
 
         const business = {
@@ -19,10 +39,12 @@ export default function AddBusinessForm({ onClose, fetchItems }) {
             categoryId : catagoryId,
             categoryName : catagoryName
         }
-        console.log(business)
         postBusiness(business);
+        setDisableForm(false);
     }
     const postBusiness = async (business) => {
+        setError(null);
+        setIsLoading(true);
         try{
             const response = await axiosPrivate.post("/business",
             JSON.stringify(business),
@@ -34,7 +56,10 @@ export default function AddBusinessForm({ onClose, fetchItems }) {
             fetchItems();
             onClose();
         } catch(error) {
-            console.error(error)
+            decipherError(error)
+        }
+        finally {
+            setIsLoading(false);
         }
     }
     useEffect(() => {
@@ -48,13 +73,13 @@ export default function AddBusinessForm({ onClose, fetchItems }) {
                         Name : category.name,
                     }
                 })
-                console.log(transformedItems)
                 setCatagories(transformedItems)
             } catch (error) {
-                setError(error.message);
+                decipherError(error)
             }
-            setIsLoading(false)
-    
+            finally {
+                setIsLoading(false)
+            }
         }
         fetchItemHandler();
     }, []);
@@ -68,24 +93,31 @@ export default function AddBusinessForm({ onClose, fetchItems }) {
             setCatagoryName(null)
         }
     }
-    // let content = <h2>Add a Business</h2>;
-    // if(error) {
-    //     content = <p>{error}</p>
-    // }
-    // if(isloading) {
-    //     content = <p>Loading ...</p>
-    // }
+    const clearErrors = () => {
+        if(!disableForm){
+          setError(null);
+        }
+      }
+   let content = (
+    <>
+    <form className={styles.form} onSubmit={submitHandler} onChange={clearErrors}>
+        <div>
+            <label htmlFor='name'>Name</label>
+            <input id='name' type="text" ref={nameRef} maxLength="25" required/>
+        </div>
+        <SelectInput onSubmit={onSelectInputSubmitHandler} label={"Category"} isRequired={false} items={catagories}/>
+        <button disabled={disableForm}>Add Business</button>
+    </form>
+    </>
+   )
+   if(isloading) {
+    content = <p>Loading ...</p>
+  }
   return (
     <>
     <h2>Add a Business</h2>
-    <form className={styles.form} onSubmit={submitHandler}>
-        <div>
-            <label htmlFor='name'>Name</label>
-            <input id='name' type="text" ref={nameRef} required/>
-        </div>
-        <SelectInput onSubmit={onSelectInputSubmitHandler} label={"Category"} isRequired={false} items={catagories}/>
-        <button>Add Business</button>
-    </form>
+        {(error) ? <p className='errorDisplay'>{error}</p> : null}
+        {content}
     </>
   )
 }

@@ -74,7 +74,7 @@ const RequiredSelectInput = ({label, items, onSubmit, isRequired}) => {
     return (
         <div onBlur={() => setShowResults(false)} onFocus={() => setShowResults(true)} className={styles.selectInput}>
             <label className={(!isValid) ? styles.inValid : styles.Valid} onClick={(event) =>  event.stopPropagation()}>{label}</label>
-            <input placeholder={`Click for ${label}`} ref={inputRef} onChange={handleFilterItems} type="text" required={isRequired}/>
+            <input maxLength="25" placeholder={`Click for ${label}`} ref={inputRef} onChange={handleFilterItems} type="text" required={isRequired}/>
             {(showResults) ? <ul className={styles.resultsBox}>{(shownItems.length > 0) ? shownItems.map(item => <li onMouseDown={handleSearchItemClick} className={styles.searchElement} id={item.id} name={item.Name} key={item.id}>{getHighlightedText(item.Name)}</li>) : <li>No Results</li>}</ul> : null}
         </div>
     )

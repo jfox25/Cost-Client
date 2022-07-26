@@ -57,7 +57,7 @@ const AnalyticPage = () => {
     }
     return (
         <div>
-            <h1>General Analytics</h1>
+            <h1>Analytics</h1>
             {content}
         </div>
     )
