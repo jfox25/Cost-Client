@@ -4,6 +4,9 @@ import TableControl from "./Table/TableControl"
 import AddExpenseForm from "./AddForms/AddExpenseForm"
 import AddControl from "./Add/AddControl";
 import  { useNavigate, useLocation } from "react-router-dom";
+import Modal from "./Modal/Modal";
+import { AnimatePresence } from "framer-motion";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const ExpensePage = () => {
     const dateConvertor = (date) => {
@@ -24,6 +27,7 @@ const ExpensePage = () => {
     const [expenses, setExpenses] = useState([]);
     const [isloading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -36,6 +40,26 @@ const ExpensePage = () => {
       { name: "Cost", sortable: false },
       {name: "Tools", sortable: false}
     ];
+    useEffect(() => {
+        if(error) {
+          setIsModalOpen(true);
+        }else {
+          setIsModalOpen(false);
+        }
+      }, [error])
+    const decipherError = (error) => {
+    if(error.response.status === 404)
+    {
+        setError("Unable to connect with Server. Please try again.");
+    }else if(error.response.status === 401)
+    {
+        navigate('/login', { state : {from: location, message: "Session has expired"}, replace : true});
+    }else if(error.response.data !== "") {
+        setError(error.response?.data)
+    }else {
+        setError("Error Loading Resources")
+    }
+    }
     const fetchExpensesHandler = async () => {
         setIsLoading(true);
         setError(null);
@@ -54,10 +78,11 @@ const ExpensePage = () => {
             setExpenses(transformedExpenses)
         }
         catch (error) {
-            setError(error.message);
-            navigate('/login', { state : {from: location, message: "Session has expired"}, replace : true});
+            decipherError(error)
         }
-        setIsLoading(false)
+        finally {
+            setIsLoading(false)
+        }
 
     }
     useEffect(() => {
@@ -71,19 +96,37 @@ const ExpensePage = () => {
     }
    
     let content = <TableControl url="/expenses" columns={columns} items={expenses} addFilter={true} removeItem={removeItem} />
-        if(error) {
-            content = <p>{error}</p>
-        }
         if(isloading) {
             content = <p>Loading ...</p>
         }
         return (
-            <div>
+          <div>
             <h1>Expenses</h1>
             {content}
-            <AddControl content={<AddExpenseForm fetchItems={fetchExpensesHandler}/>}/>
-        </div>
-    )
+            <AddControl
+              content={<AddExpenseForm fetchItems={fetchExpensesHandler} />}
+            />
+            <AnimatePresence
+              initial={false}
+              exitBeforeEnter={true}
+              onExitComplete={() => null}
+            >
+              {isModalOpen && (
+                <Modal
+                  isModalOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                  content={
+                    <div className={"errorModal"}>
+                      <h1>Error</h1>
+                      <hr />
+                      <p className={`errorDisplay`}>{error}</p>
+                    </div>
+                  }
+                />
+              )}
+            </AnimatePresence>
+          </div>
+        );
 }
 
 export default ExpensePage;

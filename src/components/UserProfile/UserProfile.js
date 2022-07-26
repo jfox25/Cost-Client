@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import  { useNavigate } from "react-router-dom";
+import  { useNavigate, useLocation } from "react-router-dom";
 import styles from "../Table/ItemDetail.module.css"
 const URL = "analytic/userAnalytics"
 const UserProfile = () => {
@@ -9,6 +9,20 @@ const UserProfile = () => {
     const [isLoading, setIsLoading] = useState(false);
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
+    const location = useLocation();
+    const decipherError = (error) => {
+        if(error.response.status === 404)
+        {
+          setError("Unable to connect with Server. Please try again.");
+        }else if(error.response.status === 401)
+        {
+          navigate('/login', { state : {from: location, message: "Session has expired"}, replace : true});
+        }else if(error.response.data !== "") {
+          setError(error.response?.data)
+        }else {
+          setError("Error Loading Resources")
+        }
+      }
     useEffect(() => {
         const fetchUserData = async () => {
             setIsLoading(true);
@@ -17,12 +31,11 @@ const UserProfile = () => {
                 const response = await axiosPrivate.get(URL);
                 setData(response?.data)
             } catch (error) {
-                setError(error.message);
-                if(error.response.status === 401) {
-                    navigate('/login', { state : {from: "/expenses"}, message: "Session has expired", replace : true});
-                }
+                decipherError(error);
             }
-            setIsLoading(false)
+            finally {
+                setIsLoading(false)
+            }
         }
 
         fetchUserData();
@@ -55,7 +68,13 @@ const UserProfile = () => {
         </div>
     )
     if(error) {
-        content = <p>{error}</p>
+        content = (
+            <div className={"errorModal"}>
+                <h1>Error</h1>
+                <hr />
+                <p className={`errorDisplay`}>{error}</p>
+            </div>
+        )
     }
     if(isLoading) {
         content = <p>Loading ...</p>

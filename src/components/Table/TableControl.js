@@ -130,7 +130,6 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
     const deleteItem = async (itemId) => {
       setError(null);
       try {
-        console.log("TRYING")
         const response = await axiosPrivate.delete(`${url}/${itemId}`);
         removeItem(itemId);
       }
@@ -184,7 +183,7 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
                 isModalOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 content={
-                  <div className={styles.errorModal}>
+                  <div className={"errorModal"}>
                     <h1>Error</h1>
                     <hr />
                     <p className={`errorDisplay`}>{error}</p>
