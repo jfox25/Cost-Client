@@ -4,10 +4,12 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
 import Leaderboard from "./Leaderboard/Leaderboard";
 import Modal from "./Modal/Modal";
+import LineChart from "./Charts/LineChart";
 import { AnimatePresence } from "framer-motion";
 
 const AnalyticPage = () => {
     const [items, setItems] = useState([]);
+    const [sortedItems, setSortedItems] = useState([]);
     const [isloading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,10 +18,10 @@ const AnalyticPage = () => {
     const axiosPrivate = useAxiosPrivate();
     const columns = [
       { name: "Month", sortable: false },
-      { name: "Expense Count", sortable: true },
-      { name: "Total Cost", sortable: true },
       { name: "Top Business", sortable: true },
       {name: "Top Category", sortable: true },
+      { name: "Expense Count", sortable: true },
+      { name: "Total Cost", sortable: false },
     ];
     useEffect(() => {
         if(error) {
@@ -47,16 +49,21 @@ const AnalyticPage = () => {
         setError(null);
         try {
             const response = await axiosPrivate.get("/analytic/generalAnalytics");
-            const transformedItems = response.data?.map(item => { return {
-                    id : item.generalAnalyticId,
-                    Time :  `${month[new Date(item.date).getMonth()]}, ${new Date(item.date).getFullYear()}`,
-                    ExpenseCount : item.numberOfExpenses,
-                    TotalCost : item.totalCostOfExpenses,
-                    TopBusiness : item.businessName,
-                    TopCategory: item.categoryName,
-                }
-            })
-            setItems(transformedItems)
+            var myData = new Map();
+            for (let i = 0; i < response.data?.length; i++) {
+              const item = response.data[i]
+              const newItem =  {
+                id : item.generalAnalyticId,
+                Time : `${month[new Date(item.date).getMonth()]}, ${new Date(item.date).getFullYear()}`,
+                TopBusiness : item.businessName,
+                TopCategory: item.categoryName,
+                ExpenseCount : item.numberOfExpenses,
+                TotalCost : item.totalCostOfExpenses,
+              }
+              myData.set(i, newItem)
+            }
+            const values = [...myData.values()];
+            setSortedItems(values)
         } catch (error) {
             decipherError(error)
         }
@@ -69,8 +76,9 @@ const AnalyticPage = () => {
     }, []);
     let content = (
         <>
-            <TableControl url="/analytic/generalAnalytics" columns={columns} items={items} fetchItems={fetchItemHandler}/>
-            <Leaderboard items={items} />
+            <TableControl url="/analytic/generalAnalytics" columns={columns} items={sortedItems}/>
+            <LineChart data ={sortedItems} title={"Analytics Visualization"}/>
+            <Leaderboard items={sortedItems} />
         </>
     );
     if(isloading) {

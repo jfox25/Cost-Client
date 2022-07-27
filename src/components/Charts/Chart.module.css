@@ -1,0 +1,62 @@
+.chartContainer {
+    width: 75%;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.chartButtonGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    max-width: 500px;
+    margin: auto;
+    padding-top: 8px;
+    padding-bottom: 12px;
+}
+.chartButtonGroup button {
+    padding: 10px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-right: 10px;
+    transition: all 0.4s;
+    font-weight: bold;
+}
+.button:hover {
+    background-color: whitesmoke;
+    border: 2px solid #d2042d;
+    cursor: pointer;
+    color: #d2042d;
+}
+.activeBlue {
+    background-color: blue;
+    color: #333;
+    color: whitesmoke;
+}
+.buttonBlue:hover {
+    background-color: whitesmoke;
+    border: 2px solid blue;
+    cursor: pointer;
+    color: blue;
+}
+.active {
+    background-color: #d2042d;
+    color: #333;
+    color: whitesmoke;
+}
+.active:hover {
+    background-color: #d2042d;
+    border: 2px solid #d2042d;
+    cursor: no-drop;
+}
+.activeBlue:hover {
+    background-color: blue;
+    border: 2px solid blue;
+    cursor: no-drop;
+}
+.chartTitle {
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 27px;
+}

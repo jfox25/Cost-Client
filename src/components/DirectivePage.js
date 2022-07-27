@@ -5,6 +5,7 @@ import  { useNavigate, useLocation } from "react-router-dom";
 import DirectiveTable from "./DirectiveTable/DirectiveTable";
 import Modal from "./Modal/Modal";
 import { AnimatePresence } from "framer-motion";
+import BarChart from "./Charts/BarChar";
 
 const DirectivePage = () => {
     const [items, setItems] = useState([]);
@@ -57,7 +58,13 @@ const DirectivePage = () => {
     useEffect(() => {
         fetchItemHandler();
     }, []);
-    let content = <DirectiveTable directives={items} />;
+    let content = (
+      <>
+        <DirectiveTable directives={items} />
+        <BarChart data={items} title={"Directives Visualization"} />
+      </>
+    )
+
     if(isloading) {
         content = <p>Loading ...</p>
     }

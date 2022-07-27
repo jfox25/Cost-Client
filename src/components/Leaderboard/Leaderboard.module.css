@@ -32,6 +32,12 @@
     cursor: pointer;
     color: #d2042d;
 }
+.buttonBlue:hover {
+    background-color: whitesmoke;
+    border: 2px solid blue;
+    cursor: pointer;
+    color: blue;
+}
 
 .leaderboard {
     border: 2px solid #333;
@@ -75,10 +81,21 @@
 .active {
     background-color: #d2042d;
     color: #333;
+    color: whitesmoke;
+}
+.activeBlue {
+    background-color: blue;
+    color: #333;
+    color: whitesmoke;
 }
 .active:hover {
     background-color: #d2042d;
     border: 2px solid #d2042d;
+    cursor: no-drop;
+}
+.activeBlue:hover {
+    background-color: blue;
+    border: 2px solid blue;
     cursor: no-drop;
 }
 .leaderboardIcon {
@@ -91,4 +108,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+.leaderboardHeading h2{
+    font-weight: 800;
+    letter-spacing: 2px;
 }

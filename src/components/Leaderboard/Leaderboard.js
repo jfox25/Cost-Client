@@ -41,11 +41,11 @@ const Leaderboard = ({ items }) => {
             <button onClick={buttonClickHandler} className={styles.button}>Total Cost</button>
           )}
           {rankProperty === TOTAL_NUMBER_PROPERTY ? (
-            <button disabled className={styles.active}>
+            <button disabled className={`${styles.activeBlue}`}>
               Total Count
             </button>
           ) : (
-            <button onClick={buttonClickHandler} className={styles.button}>Total Count</button>
+            <button onClick={buttonClickHandler} className={styles.buttonBlue}>Total Count</button>
           )}
         </div>
       </div>
