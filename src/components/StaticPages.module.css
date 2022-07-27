@@ -1,0 +1,159 @@
+.background {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient( 
+        to right, 
+        #d2042d 0%, 
+        #d2042d 50%,
+        whitesmoke 50%,
+        whitesmoke 100%
+        );
+       
+}
+.backgroundContainer {
+    height: 100vh;
+    min-height: 970px;
+    max-width: 1300px;
+    margin: auto;
+    background: radial-gradient(at top right, transparent 70.6%, #d2042d 70.7%) ,
+    linear-gradient(1deg, whitesmoke 0%, whitesmoke 100%); 
+}
+.logo {
+    width: 300px;
+    margin: auto;
+}
+.slogan {
+    margin-top: 4px;
+    font-size: 26px;
+    color: #333;
+}
+.listTitle {
+    font-weight: bold;
+    color: #d2042d;
+    font-size: 19px;
+    padding-bottom: 7px;
+}
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 500px;
+    margin: auto;
+    padding-top: 5px;
+}
+.buttonOne {
+    display: block;
+    margin-top: 5px;
+    width: 200px;
+    margin: auto;
+    background-color: whitesmoke;
+    border: 3px solid #d2042d;
+    color: #d2042d;
+    font-size: 19px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.4s;
+}
+.signUpButton {
+    display: block;
+    margin-top: 5px;
+    width: 200px;
+    margin: auto;
+    background-color: whitesmoke;
+    border: 3px solid #d2042d;
+    color: #d2042d;
+    font-size: 19px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.4s;
+    margin-top: 30px;
+}
+.signUpButton:hover {
+    background-color: #d2042d;
+    color: whitesmoke;
+    cursor: pointer;
+}
+.buttonOneSmall {
+    display: block;
+    margin-top: 5px;
+    width: 100px;
+    margin: auto;
+    background-color: whitesmoke;
+    border: 3px solid #d2042d;
+    color: #d2042d;
+    font-size: 19px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.4s;
+}
+.buttonOne:hover {
+    background-color: #d2042d;
+    color: whitesmoke;
+    cursor: pointer;
+}
+.buttonOneSmall:hover {
+    background-color: #d2042d;
+    color: whitesmoke;
+    cursor: pointer;
+}
+.container {
+    margin: 15px;
+    margin-top: 0px;
+    max-height: 100vh;
+}
+.homeList {
+    max-width: 630px;
+    margin: auto;
+    text-align: left;
+    list-style: square;
+    font-size: 17px;
+    padding-bottom: 21px;
+    list-style-position: inside;
+    display:-moz-inline-stack;
+    display:inline-block;
+    zoom:1;
+    *display:inline;
+}
+.homeList li {
+    padding-bottom: 10px;
+    line-height: 1.9rem;
+    font-weight: 300;
+}
+.homeText {
+    max-width: 750px;
+    margin: auto;
+    margin-bottom: 20px;
+    font-weight: 400;
+    line-height: 1.9rem;
+    font-size: 17px;
+    font-style: italic;
+}
+.loginLabel {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+.container {
+    min-width: none;
+    padding-top: 20px;
+}
+@media only screen and (max-width: 850px) {
+    .backgroundContainer {
+        background: whitesmoke;
+    }
+    .homeList {
+        border: 3px solid #d2042d;
+        border-radius: 5px;
+        list-style: none;
+        max-width: 650px;
+        padding: 15px 7px;
+        margin-bottom: 30px;
+    }
+  }

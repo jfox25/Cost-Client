@@ -28,7 +28,8 @@ const showMore = {
 export default function AddFrequentForm({ onClose, fetchItems }) {
     const today = new Date();
     today.setMonth(today.getMonth()+1)
-    const newDate = new Date(`${today.getFullYear()}-${today.getMonth() + 1}-31`).toISOString().substring(0,10)
+    const maxDate = new Date(`${today.getFullYear()}-${today.getMonth()}-31`).toISOString().substring(0,10)
+    const minDate = new Date(`${today.getFullYear()}-${today.getMonth()}-1`).toISOString().substring(0,10)
     const navigate = useNavigate();
     const location = useLocation();
     const axiosPrivate = useAxiosPrivate();
@@ -225,7 +226,8 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
                 <label htmlFor="lastDateUsed">Last Date Used</label>
                 <input
                   ref={lastUsedDateRef}
-                  max={newDate}
+                  max={maxDate}
+                  min={minDate}
                   id="lastDateUsed"
                   type="date"
                   required={isRecurring}

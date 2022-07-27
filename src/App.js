@@ -17,6 +17,7 @@ import Unauthorized from './components/Unauthorized';
 import AdminDashboard from './components/AdminDashboard';
 import RequireAuth from './components/RequireAuth';
 import PersistLogin from './components/PersistLogin';
+import NotFoundPage from './components/NotFoundPage';
 
 const ROLES = {
   user : "User",
@@ -47,7 +48,7 @@ function App() {
           </Route>
         </Route>
         {/* catch all*/}
-        <Route path="*" element={<div><h1>404!</h1></div>} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

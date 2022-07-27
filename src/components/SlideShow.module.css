@@ -1,0 +1,40 @@
+.slideShow {
+    max-width: 600px;
+    margin: auto;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border: 3px solid rgb(220, 219, 219);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.slideButtonGroup {
+    display: flex;
+    flex-direction: row;
+    width: 200px;
+    margin: auto;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+.slideButton {
+    padding: 7px 10px;
+    border-radius: 5px;
+    background-color: rgb(220, 219, 219);
+    color: #d2042d;
+    border: none;
+    font-size: 18px;
+}
+.slideButton:hover {
+    cursor: pointer;
+}
+.content {
+    font-size: 20px;
+    width: 95%;
+    margin: auto;
+    font-weight: 450;
+    line-height: 1.9rem;
+    padding-top: 7px;
+    padding-bottom: 5px;
+    height: 60px;
+}

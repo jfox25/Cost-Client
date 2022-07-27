@@ -4,6 +4,7 @@ import {Link, useNavigate, useLocation} from "react-router-dom"
 import axios from "../../api/axios";
 import logo from "../../images/CostLogo.png"
 import styles from "./Register.module.css"
+import stylesStatic from ".././StaticPages.module.css"
 
 const Login = () => {
     const { setAuth, persist, setPersist } = useAuth();
@@ -53,44 +54,51 @@ const Login = () => {
         localStorage.setItem("persist", persist)
     }, [persist])
  return (
-    <>
-        <form className={styles.form} onSubmit={handleFormSubmit}>
-            <img src={logo} className={styles.logo}/>
-            <h2 className={styles.loginTitle}>Login</h2>
-            <div className={styles.error}>
-                {(message === "") ? null : <p className={styles.message}>{message}</p>}
-                {(error === "") ? null : <p className={styles.errorMessage}>{error}</p>}
+    <div className={stylesStatic.background}>
+        <div className={stylesStatic.backgroundContainer}>
+            <div className={stylesStatic.container}>
+
+                <form className={styles.form} onSubmit={handleFormSubmit}>
+                    <Link to="/"><img src={logo} className={styles.logo}/></Link>
+                    <h2 className={styles.loginTitle}>Login</h2>
+                    <div className={styles.error}>
+                        {(message === "") ? null : <p className={styles.message}>{message}</p>}
+                        {(error === "") ? null : <p className={styles.errorMessage}>{error}</p>}
+                    </div>
+                    <div>
+                        <label className={styles.label}>Email</label>
+                        <input 
+                            className={styles.input}
+                            value={email} type="email" 
+                            required  
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label className={styles.label}>Password</label>
+                        <input 
+                            className={styles.input} 
+                            value={pwd} type="password" 
+                            required  
+                            onChange={(e) => setPwd(e.target.value)}
+                        />
+                    </div>
+                <button>Login</button>
+                <div className={styles.rememberDevice}>
+                        <input 
+                            type="checkbox" 
+                            id="persist"
+                            onChange={togglePersist}
+                            checked ={persist}
+                        />
+                        <label htmlFor="persist">Trust This Device</label>
+                </div>
+                <p className={styles.loginLabel}>Create an account</p>
+                    <Link to="/register">Register</Link>
+                </form>
             </div>
-            <div>
-                <label className={styles.label}>Email</label>
-                <input 
-                    className={styles.input}
-                    value={email} type="email" 
-                    required  
-                    onChange={(e) => setEmail(e.target.value)}
-                 />
-            </div>
-            <div>
-                <label className={styles.label}>Password</label>
-                <input 
-                    className={styles.input} 
-                    value={pwd} type="password" 
-                    required  
-                    onChange={(e) => setPwd(e.target.value)}
-                />
-            </div>
-           <button>Login</button>
-           <div className={styles.rememberDevice}>
-                <input 
-                    type="checkbox" 
-                    id="persist"
-                    onChange={togglePersist}
-                    checked ={persist}
-                />
-                <label htmlFor="persist">Trust This Device</label>
-           </div>
-        </form>
-    </>
+        </div>
+    </div>
  )
 }
 export default Login;

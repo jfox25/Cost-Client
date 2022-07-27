@@ -7,8 +7,8 @@
     border: 4px solid #d2042d;
     border-radius: 7px;
     padding: 40px 20px;
-    margin-top: 40px;
     padding-top: 30px;
+    background-color: whitesmoke;
 }
 .form div {
     display: flex;
@@ -140,6 +140,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 0px;
+    padding-bottom: 7px;
     font-size: 18px;
 }
 .rememberDevice input{
