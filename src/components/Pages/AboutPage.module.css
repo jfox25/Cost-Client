@@ -10,13 +10,12 @@
     padding: 0;
     list-style: none;
 }
-
 .aboutPageContainer p {
     font-size: 17px;
-    line-height: 1.6rem;
+    line-height: 1.7rem;
     font-weight: 340;
 }
-.aboutPageContainer h1, h2, h3{
+.subTitle {
     color: #d2042d;
     font-weight: 800;
     letter-spacing: 0.1rem;
@@ -75,8 +74,9 @@
     max-width: 90%;
     margin: auto;
 }
-.collapseContent label {
+.label {
     font-size: 17px;
+    font-weight: bold;
 }
 .aboutPageContainer:last-child {
     margin-bottom: 100px;

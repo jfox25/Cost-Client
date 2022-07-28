@@ -5,7 +5,7 @@ const CollapseSection = ({title, content}) => {
     const [isOpen, setIsOpen] = useState(false);
   return (
     <div className={styles.collapseSectionContainer}>
-        <h3 className={styles.collapseTitle}>{title}</h3>
+        <h3 className={styles.subTitle}>{title}</h3>
         {(!isOpen) ? <button onClick={() => setIsOpen(true)} className={styles.collapseButton}>View</button> : null}
         {(isOpen) ? (
             <div>
