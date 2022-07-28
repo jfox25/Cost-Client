@@ -1,0 +1,88 @@
+.aboutPageContainer {
+    padding-top: 20px;
+    max-width: 1300px;
+    margin: auto;
+    color: #333;
+    font-size: 15px;
+    min-height: 120vh;
+}
+.aboutPageContainer ul {
+    padding: 0;
+    list-style: none;
+}
+
+.aboutPageContainer p {
+    font-size: 17px;
+    line-height: 1.6rem;
+    font-weight: 340;
+}
+.aboutPageContainer h1, h2, h3{
+    color: #d2042d;
+    font-weight: 800;
+    letter-spacing: 0.1rem;
+}
+.collapseButton {
+    margin-top: 10px;
+    text-decoration: none;
+    color: whitesmoke;
+    font-weight: 900;
+    background-color: #333;
+    border: 2px solid #333;
+    padding: 5px 8px;
+    border-radius: 5px;
+    transition: all 0.4s;
+}
+.collapseButton:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+    color: #333;
+}
+.aboutText {
+    width: 80%;
+    max-width: 850px;
+    margin: auto;
+    margin-top: 30px;
+}
+.bold {
+    color: #d2042d;
+    font-weight: bold;
+}
+.bold2 {
+    font-weight: bold;
+}
+.collapseSectionContainer {
+    border: 2px solid rgb(220, 219, 219);
+    max-width: 1000px;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.socialItem {
+    font-size: 24px;
+    margin-left: 5px;
+    color: #333;
+    transition: all 0.3s;
+}
+.socialItem:hover {
+    cursor: pointer;
+    color: #d2042d;
+}
+.collapseContent {
+    padding-top: 3px;
+    padding-bottom: 8px;
+    max-width: 90%;
+    margin: auto;
+}
+.collapseContent label {
+    font-size: 17px;
+}
+.aboutPageContainer:last-child {
+    margin-bottom: 100px;
+}
+.homeButton {
+    position: fixed;
+    right: 8%;
+    top: 5%;
+}

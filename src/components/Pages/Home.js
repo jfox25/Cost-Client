@@ -15,6 +15,7 @@ const Home = () => {
             <div className={styles.backgroundContainer}>
                 <div className={styles.container}>
                     <img src={logo} className={styles.logo}/>
+                    <Link to="/about" className={styles.aboutButton}>Learn More</Link>
                     <p className={styles.slogan}>Expense tracking just got easier</p>
                   
                     <p className={styles.listTitle}>What Cost can do for you:</p>

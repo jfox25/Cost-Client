@@ -10,6 +10,7 @@ import DirectivePage from "./components/Pages/DirectivePage";
 import Register from "./components/Login/Register";
 import Login from "./components/Login/Login";
 import Home from "./components/Pages/Home"
+import AboutPage from './components/Pages/AboutPage';
 import Unauthorized from './components/Pages/Unauthorized';
 import AdminDashboard from './components/Pages/AdminDashboard';
 import RequireAuth from './components/RequireAuth';
@@ -28,6 +29,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="unauthorized" element={<Unauthorized />} />
         {/* Protected Routes */}
         <Route element={<PersistLogin />}>

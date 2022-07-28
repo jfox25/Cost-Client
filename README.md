@@ -1,70 +1,125 @@
-# Getting Started with Create React App
+<h1 align="center" style="color:#d2042d">Cost Client</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+    <img style="width: 400px" src="./CostLogo.png">
+</p>
+<p align="center">By <a href="https://github.com/jfox25">James Fox</a></p>
 
-## Available Scripts
+## About
+Cost is a full stack web application that help users manage their expenses. The core ideas of Cost is to allow users to easily add, view, and analyze their expenses, giving them clear insights into how better to manage their money. Users can add Business to the system for easy access, when creating expenses. Categories help users organize and breakdown their expenses too easily see where their money goes. Directives builds on this more, by grouping expenses into three distinct categories. Lots of expenses are repeated on a consistent or inconsistent basis, in order to prevent the need to re-enter expenses, Cost has Frequents. Frequents are a model of an expense that occurs in a user’s daily life frequently. They can be used to quickly generate an expense, by storing business, directive, category, and price information. Great for repetitive, inconsistent expenses like a coffee order or a car wash. Frequents can also handle consistent expenses like rent or a gym memberships. In order to understand their expenses better, Cost provides users with leader board, chart, and table views. These views show relevant information to the user to help give them better insights into their data. 
 
-In the project directory, you can run:
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React 18.2.0
+- Axios
+- React Router
+- ChartJs
+- FortAwesome
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project Requirements
 
-### `npm test`
+1. Node
+2. [Cost-Api](https://github.com/jfox25/Cost-Api) instance
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Project Setup
 
-### `npm run build`
+1. Clone this repository to your desktop using git clone
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+git clone https://github.com/jfox25/Cost-Client
+```
+2. Install all necessary dependencies 
+```
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Change the axios url to the url of your local [Cost-Api](https://github.com/jfox25/Cost-Api) instance.  
+```
+dotnet install
+```
+4. Start saving!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Other Cost Repositories
+- [Cost-Api](https://github.com/jfox25/Cost-Client)
+- [Cost-Research](https://github.com/jfox25/Cost-Research)
 
-### `npm run eject`
+## GitHub Link
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+[Link to Code on GitHub](https://github.com/jfox25/Cost-Client)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Creator's Linkedin 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+[Linkedin](https://www.linkedin.com/in/jamesconnorfox/)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Capstone Information
 
-## Learn More
+### MVP Status
+Project reaches the Mvp
+```
+Cost Capstone Proposal
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+MVP LIST
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- To let users easily view and understand their expenses through interactive tables, charts and other analytics.
+- List the absolute minimum features the project requires to meet this purpose or goal:
+- Users can log in/ log out with Api
+- Users can add expenses, frequents, locations, categories
+- Users can view expenses in interactive table with sorting/filtering functionality
+- Forms user modal
+- Users can go to an analytics page and view charts and details about their expenses
 
-### Code Splitting
+What tools, frameworks, libraries, APIs, modules and/or other resources (whatever is specific to your track, and your language) will you use to create this MVP? List them all here. Be specific.
+Chart.JS
+React
+Styled Components
+Expense Api
+Css
+Html
+Javascript
+Jest
+Node
+Webpack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
 
-### Analyzing the Bundle Size
+### Research and planning Log
+```
+7/8/22
+8:10, start to build component tree diagram for table-demo
+8:40, start research into how to do api calls in a react app
+9:10, start research into CORS policy
+9:50, continue research into api calls in react apps
+11:30, building out demo application
+1:20, research into style components in react
+3:30, add styling to demo project
+4:10, start work on capstone proposal.
+Demo Project : https://github.com/jfox25/Capstone-Table-Demo
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+7/15/22: 
+8:05, start research into creating a login/register/logout functionality.
+9:15, start to look into attacks my application could be comporomised by.
+10:10, start first video tutorial on adding login/register functionality.
+1:15, start second tutorial on adding login page.
+2:25, cont. work on second tutorial on adding login page.
+3:17, start doing research on react-router and how to incorporate it into demo project
+4:16, finish up research and devlopment for react-router and login form
+Demo Project : https://github.com/jfox25/Capstone-Table-Demo
 
-### Making a Progressive Web App
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Bugs
 
-### Advanced Configuration
+- No know bugs at this time. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Future Improvements
 
-### Deployment
+- Change several components for better performance and readability.
+- Authentication changes
+- Admin functionality
+- Score System
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+MIT
+Copyright (c) 2022 James Fox
