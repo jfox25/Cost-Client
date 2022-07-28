@@ -285,7 +285,7 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
                   exit="exit"
                   >
                         <div>
-                          <label htmlFor="billedEvery">Billed Every(Month)</label>
+                          <label htmlFor="billedEvery">Billed Every (months)</label>
                           <input
                             ref={billedEveryRef}
                             min="1"

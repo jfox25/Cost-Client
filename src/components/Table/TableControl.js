@@ -54,8 +54,14 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
           setTotalCostOfItems(gettotalCostOfItems(items));
           break;
         case CURRENT_MONTH:
-          const currentMonthItems = items.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
-          (currentMonthItems.length === 0) ? setTotalCostOfItems(0) : setTotalCostOfItems(gettotalCostOfItems(currentMonthItems));
+          console.log(new Date(items[0].Date).getFullYear() === new Date().getFullYear())
+          const justMonthItems = items.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
+          const currentMonthItems = justMonthItems.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear())
+          if(currentMonthItems.length == 0) {
+            setTotalCostOfItems(0);
+          } else {
+            setTotalCostOfItems(gettotalCostOfItems(currentMonthItems))
+          }
           break;
         case CURRENT_YEAR:
           const currentYearItems = items.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
@@ -96,7 +102,8 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
       case ALL:
         return filteredItems;
       case CURRENT_MONTH:
-        return filteredItems.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
+        const currentMonth = filteredItems.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
+        return currentMonth.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
       case CURRENT_YEAR:
         return filteredItems.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
       default:

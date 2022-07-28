@@ -234,7 +234,7 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
                 />
               </div>
               <div>
-                <label htmlFor="billedEvery">Billed Every</label>
+                <label htmlFor="billedEvery">Billed Every (months)</label>
                 <input
                   ref={billedEveryRef}
                   id="billedEvery"

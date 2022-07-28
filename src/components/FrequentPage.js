@@ -10,12 +10,21 @@ import { AnimatePresence } from "framer-motion";
 const FrequentPage = () => {
     const dateConvertor = (date, monthIncrementor = 0) => {
         const d = new Date(date);
-        const year = d.getFullYear();
-        let month = d.getMonth()+monthIncrementor + 1;
+        let year = d.getFullYear();
+        let month = d.getMonth()+ monthIncrementor + 1;
         let dt = d.getDate();
 
         if (dt < 10) {
         dt = '0' + dt;
+        }
+        if(month > 12) {
+          const numberOfYears = Math.floor(month / 12);
+          console.log(numberOfYears)
+          console.log(month)
+          month = (month - (numberOfYears * 12));
+          console.log(month)
+          // month = 5;
+          year = year + numberOfYears;
         }
         if (month < 10) {
         month = '0' + month;
