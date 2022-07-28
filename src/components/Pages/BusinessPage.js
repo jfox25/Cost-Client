@@ -1,12 +1,13 @@
-import {useState, useEffect, useCallback} from "react"
-import TableControl from "./Table/TableControl"
-import AddControl from './Add/AddControl'
-import AddBusinessForm from "./AddForms/AddBusinessForm";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import Leaderboard from "./Leaderboard/Leaderboard";
+import {useState, useEffect} from "react"
+import TableControl from "../Table/TableControl"
+import AddControl from '../Add/AddControl'
+import AddBusinessForm from "../AddForms/AddBusinessForm";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import Leaderboard from "../Leaderboard/Leaderboard";
 import  { useNavigate, useLocation } from "react-router-dom";
-import Modal from "./Modal/Modal";
+import Modal from "../Modal/Modal";
 import { AnimatePresence } from "framer-motion";
+import LoadingIndicator from "../Extra/LoadingIndicator";
 
 const BusinessPage = () => {
     const [items, setItems] = useState([]);
@@ -81,11 +82,11 @@ const BusinessPage = () => {
         </>
     );
     if(isloading) {
-        content = <p>Loading ...</p>
+        content = <LoadingIndicator />
     }
     return (
       <div>
-        <h1>Businesses</h1>
+        <h1 className="pageTitle">Businesses</h1>
         {content}
         <AddControl
           content={<AddBusinessForm fetchItems={fetchItemHandler} />}

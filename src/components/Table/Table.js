@@ -8,6 +8,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
 import PaginationControls from "./PaginationControls";
 import { AnimatePresence } from "framer-motion";
+import LoadingIndicator from "../Extra/LoadingIndicator";
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, columns, activeColumn, onItemRowDelete}) => {
     const axiosPrivate = useAxiosPrivate();
@@ -18,12 +19,11 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
     const [detailItemId, setDetailItemId] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [refinedItems, setRefinedItems] = useState([]);
-    const [itemsPerPage] = useState(10);
+    const [itemsPerPage] = useState(30);
     const [isloading, setIsLoading] = useState(false);
     const [detailShouldOpen, setDetailShouldOpen] = useState(false);
     const [error, setError] = useState(null);
     const decipherError = (error) => {
-        console.log(typeof error)
         if(error.response.status === 404)
         {
           setError("Unable to connect with Server. Please try again.");
@@ -36,10 +36,15 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
           setError("Error Loading Resources")
         }
       }
-    const makePages = (filteredItems) => {
-        const indexOfLastItem = currentPage * itemsPerPage;
-        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const makePages = (filteredItems, reset=false) => {
+        if(reset) setCurrentPage(1);
+        const indexOfLastItem = (!reset) ? currentPage * itemsPerPage : itemsPerPage;
+        const indexOfFirstItem = (!reset) ? indexOfLastItem - itemsPerPage : 0;
         const newCurrentDisplayItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+        if(newCurrentDisplayItems.length === 0 && indexOfFirstItem !== 0)
+        {
+          makePages(filteredItems, true)
+        }
         return newCurrentDisplayItems;
       }
     const paginate = pageNumber => {
@@ -48,6 +53,7 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
     useEffect(() => {
         setRefinedItems(makePages(displayItems))
     }, [displayItems, currentPage])
+
     const buildDateString = (date) => {
         const year = date.substring(0, 4)
         const month = date.substring(5, 7)
@@ -107,7 +113,7 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
           <tbody>
             {newItemGroups.length === 0 ? (
               <tr className={styles.noItems}>
-                <td>No Items Found</td>
+                <td align="center" colSpan={columns.length + 1}>No Items Found</td>
               </tr>
             ) : (
               newItemGroups.map((itemGroup, index) => {
@@ -116,7 +122,7 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
                     MONTHS[
                       new Date(buildDateString(itemGroup[0].Date)).getMonth()
                     ]
-                  }, ${new Date(itemGroup[0].Date).getFullYear()}`;
+                  }, ${new Date(buildDateString(itemGroup[0].Date)).getFullYear()}`;
                   return (
                     <TableGroup
                       deleteIsOn={columns[columns.length - 1].name === "Tools"}
@@ -169,9 +175,7 @@ const Table= ({url, totalCostOfItems, searchValue, onItemsSort, displayItems, co
     )
     if(isloading) {
         modalContent = (
-            <div>
-                <p> Loading ...</p>
-            </div>
+            <LoadingIndicator />
         )
     }
     if(error) {

@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react'
 import styles from './Forms.module.css'
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
+import LoadingIndicator from '../Extra/LoadingIndicator';
 export default function AddCatagoryForm({ onClose, fetchItems }) {
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
@@ -69,7 +70,7 @@ export default function AddCatagoryForm({ onClose, fetchItems }) {
         </>
     )
     if(isloading) {
-        content = <p>Loading ...</p>
+        content = <LoadingIndicator />
       }
   return (
     <>

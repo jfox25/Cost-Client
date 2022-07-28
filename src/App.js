@@ -1,23 +1,20 @@
-import { dom } from '@fortawesome/fontawesome-svg-core';
 import './App.css';
-// import PageControl from "./components/PageControl";
 import {Routes, Route } from "react-router-dom";
-import Layout from './components/Layout';
-import ExpensePage from './components/ExpensePage'
-import FrequentPage from "./components/FrequentPage";
-import AnalyticPage from "./components/AnalyticPage";
-// import Navbar from "./Navbar";
-import BusinessPage from "./components/BusinessPage";
-import CategoryPage from "./components/CategoryPage";
-import DirectivePage from "./components/DirectivePage";
+import Layout from './components/Pages/Layout';
+import ExpensePage from './components/Pages/ExpensePage'
+import FrequentPage from "./components/Pages/FrequentPage";
+import AnalyticPage from "./components/Pages/AnalyticPage";
+import BusinessPage from "./components/Pages/BusinessPage";
+import CategoryPage from "./components/Pages/CategoryPage";
+import DirectivePage from "./components/Pages/DirectivePage";
 import Register from "./components/Login/Register";
 import Login from "./components/Login/Login";
-import Home from "./components/Home"
-import Unauthorized from './components/Unauthorized';
-import AdminDashboard from './components/AdminDashboard';
+import Home from "./components/Pages/Home"
+import Unauthorized from './components/Pages/Unauthorized';
+import AdminDashboard from './components/Pages/AdminDashboard';
 import RequireAuth from './components/RequireAuth';
 import PersistLogin from './components/PersistLogin';
-import NotFoundPage from './components/NotFoundPage';
+import NotFoundPage from './components/Pages/NotFoundPage';
 
 const ROLES = {
   user : "User",

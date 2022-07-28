@@ -1,6 +1,5 @@
 import GroupHeading from "./GroupHeading";
 import TableRow from "./TableRow";
-import styles from './TableGroup.module.css'
 
 const TableGroup = (props) => {
     return (

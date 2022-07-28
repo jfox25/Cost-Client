@@ -1,11 +1,11 @@
-import {useState, useEffect, useCallback} from "react";
-import TableControl from "./Table/TableControl";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import {useState, useEffect} from "react";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
-import DirectiveTable from "./DirectiveTable/DirectiveTable";
-import Modal from "./Modal/Modal";
+import DirectiveTable from "../DirectiveTable/DirectiveTable";
+import Modal from "../Modal/Modal";
 import { AnimatePresence } from "framer-motion";
-import BarChart from "./Charts/BarChar";
+import BarChart from "../Charts/BarChart";
+import LoadingIndicator from "../Extra/LoadingIndicator";
 
 const DirectivePage = () => {
     const [items, setItems] = useState([]);
@@ -66,11 +66,11 @@ const DirectivePage = () => {
     )
 
     if(isloading) {
-        content = <p>Loading ...</p>
+        content = <LoadingIndicator />
     }
     return (
         <div>
-            <h1>Directives</h1>
+            <h1 className="pageTitle">Directives</h1>
             {content}
             <AnimatePresence
           initial={false}

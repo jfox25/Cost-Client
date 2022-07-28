@@ -1,12 +1,12 @@
 import {useState, useEffect, useCallback} from "react"
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import TableControl from "./Table/TableControl"
-import AddExpenseForm from "./AddForms/AddExpenseForm"
-import AddControl from "./Add/AddControl";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import TableControl from "../Table/TableControl"
+import AddExpenseForm from "../AddForms/AddExpenseForm"
+import AddControl from "../Add/AddControl";
 import  { useNavigate, useLocation } from "react-router-dom";
-import Modal from "./Modal/Modal";
+import Modal from "../Modal/Modal";
 import { AnimatePresence } from "framer-motion";
-import { faL } from "@fortawesome/free-solid-svg-icons";
+import LoadingIndicator from "../Extra/LoadingIndicator";
 
 const ExpensePage = () => {
     const dateConvertor = (date) => {
@@ -97,11 +97,11 @@ const ExpensePage = () => {
    
     let content = <TableControl url="/expenses" columns={columns} items={expenses} addFilter={true} removeItem={removeItem} />
         if(isloading) {
-            content = <p>Loading ...</p>
+            content = <LoadingIndicator />
         }
         return (
           <div>
-            <h1>Expenses</h1>
+            <h1 className="pageTitle">Expenses</h1>
             {content}
             <AddControl
               content={<AddExpenseForm fetchItems={fetchExpensesHandler} />}

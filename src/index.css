@@ -6,11 +6,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: whitesmoke;
-  /* max-width: 1250px; */
   margin: auto;
   color: #333;
 }
-
+.generalContainer {
+  max-width: 1300px;
+  min-height: 100vh;
+  margin: auto;
+}
+.pageTitle {
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-size: 30px;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

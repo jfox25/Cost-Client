@@ -1,8 +1,9 @@
-import React, {useRef, useState, useCallback, useEffect} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import styles from './Forms.module.css'
 import SelectInput from './SelectInput';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
+import LoadingIndicator from '../Extra/LoadingIndicator';
 export default function AddBusinessForm({ onClose, fetchItems }) {
     const axiosPrivate = useAxiosPrivate();
     const [catagories, setCatagories] = useState([]);
@@ -111,7 +112,7 @@ export default function AddBusinessForm({ onClose, fetchItems }) {
     </>
    )
    if(isloading) {
-    content = <p>Loading ...</p>
+    content = <LoadingIndicator />
   }
   return (
     <>

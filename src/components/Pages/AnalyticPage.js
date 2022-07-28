@@ -1,14 +1,14 @@
-import {useState, useEffect, useCallback} from "react"
-import TableControl from "./Table/TableControl"
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import {useState, useEffect} from "react"
+import TableControl from "../Table/TableControl"
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
-import Leaderboard from "./Leaderboard/Leaderboard";
-import Modal from "./Modal/Modal";
-import LineChart from "./Charts/LineChart";
+import Leaderboard from "../Leaderboard/Leaderboard";
+import Modal from "../Modal/Modal";
+import LineChart from "../Charts/LineChart";
 import { AnimatePresence } from "framer-motion";
+import LoadingIndicator from "../Extra/LoadingIndicator";
 
 const AnalyticPage = () => {
-    const [items, setItems] = useState([]);
     const [sortedItems, setSortedItems] = useState([]);
     const [isloading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -82,11 +82,11 @@ const AnalyticPage = () => {
         </>
     );
     if(isloading) {
-        content = <p>Loading ...</p>
+        content = <LoadingIndicator />
     }
     return (
       <div>
-        <h1>Analytics</h1>
+        <h1 className="pageTitle">Analytics</h1>
         {content}
         <AnimatePresence
           initial={false}

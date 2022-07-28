@@ -7,29 +7,18 @@ const RequiredSelectInput = ({label, items, onSubmit, isRequired}) => {
     const [isValid, setIsValid] = useState(false);
     const [value, setValue] = useState({id: 0, name: ""});
     const inputRef = useRef('')
-    // const handleInputBlur = (event) => {
-    //     if(event.target.nodeName === "INPUT")
-    //     {
-    //        if(event.currentTarget.id === 0)
-    //        {
 
-    //        }
-    //     }
-    // }
     const handleFilterItems = () => {
         const filteredItems = items.filter(item => item.Name.toLowerCase().includes(inputRef.current.value.toLowerCase()))
         setShownItems(filteredItems);
         if(inputRef.current.value !== value.name)
         {
-            console.log("CHANGEValue")
             setValue({id: 0, name: ""});
         }
     }
     const handleSearchItemClick = (event) => {
-        console.log("CLICK")
         event.stopPropagation();
         setValue({id : event.currentTarget.id, name: event.currentTarget.getAttribute("name")})
-        // inputRef.current.value = event.currentTarget.getAttribute("name")
     }
     useEffect(() => {
         if(value.id === 0)
@@ -55,7 +44,6 @@ const RequiredSelectInput = ({label, items, onSubmit, isRequired}) => {
             if(inputRef.current.value !== "" && !isValid)
             {
                 inputRef.current.value = ""
-                // setValue({id: 0, name: ""})
             }
         }
     }, [showResults]);

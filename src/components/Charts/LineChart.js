@@ -17,9 +17,9 @@ const LineChart = ({ data, title }) => {
         }).map(obj => {
             return obj.value
         })
-        a.date = `${aYear[1]}-${aMonth[0]}-01`
-        b.date = `${bYear[1]}-${bMonth[0]}-01`
-        return new Date(a.date) - new Date(b.date);
+        const aDate = `${aYear[1]}-${aMonth[0]}-01`
+        const bDate = `${bYear[1]}-${bMonth[0]}-01`
+        return new Date(aDate) - new Date(bDate);
       });
     const [showTotalCost,setShowTotalCost] = useState(true);
     const [displayData ,setDisplayData] = useState({
@@ -101,8 +101,8 @@ const LineChart = ({ data, title }) => {
         <Line data={displayData} options={options} />
         </>
     )
-    if(data.length === 0) {
-        content = <h3>Add More Expenses to visualize data</h3>
+    if(data.length <= 1) {
+        content = <h3>Add Expenses to at least two different months to visualize data</h3>
     }
   return (
     <div className={styles.chartContainer}>

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 const ItemDetail = ({ itemPairs, title, id }) => {
     const [formatedTitle, setFormatedTitle] = useState("Loading");
     useEffect(() => {
-        console.log("Use Effect Ran")
         const updateTitleName = (string) => {
             if(string == "categories"){
                 setFormatedTitle("Category");
@@ -18,7 +17,6 @@ const ItemDetail = ({ itemPairs, title, id }) => {
                 if(newTitle.includes("/")) {
                     const index = newTitle.indexOf("/") + 1;
                     const result = [newTitle.slice(0, index), newTitle.slice(index)];
-                    console.log(result)
                     setFormatedTitle(result[1]);
                 }else {
                     setFormatedTitle(newTitle);

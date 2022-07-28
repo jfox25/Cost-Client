@@ -42,7 +42,7 @@ const TableRow = (props) => {
     return (
         <tr onClick={showDetailHandler} className={styles['table-row']}>
             {propertyValues.map((propertyValue, index) => <td className={styles['table-row-item']} key={index}>{getHighlightedText(propertyValue)}</td>)}
-            {props.deleteIsOn && <td className={styles['table-row-item']}><button onClick={deleteButtonClickHandler}>X</button></td>}
+            {props.deleteIsOn && <td className={styles['table-row-item']}><button className={styles.deleteButton} onClick={deleteButtonClickHandler}>X</button></td>}
         </tr>
     )
 }

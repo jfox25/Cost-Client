@@ -7,7 +7,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import { AnimatePresence } from "framer-motion";
-import PaginationControls from "./PaginationControls";
+import LoadingIndicator from "../Extra/LoadingIndicator";
 const ALL = "all";
 const CURRENT_MONTH = "currentMonth";
 const CURRENT_YEAR = "currentYear"
@@ -22,6 +22,12 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
   const [isloading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const buildDateString = (date) => {
+    const year = date.substring(0, 4)
+    const month = date.substring(5, 7)
+    const day = date.substring(8,)
+    return `${month}-${day}-${year}`
+}
   const decipherError = (error) => {
     if(error.response.status === 404)
     {
@@ -37,12 +43,12 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
   }
   const prevActiveColumn = useRef();
   useEffect(() => {
-    if(error) {
+    if(error || isloading) {
       setIsModalOpen(true);
     }else {
       setIsModalOpen(false);
     }
-  }, [error])
+  }, [error, isloading])
   useEffect(() => {
     prevActiveColumn.current = activeColumn;
   }, [activeColumn]); 
@@ -54,9 +60,13 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
           setTotalCostOfItems(gettotalCostOfItems(items));
           break;
         case CURRENT_MONTH:
-          console.log(new Date(items[0].Date).getFullYear() === new Date().getFullYear())
-          const justMonthItems = items.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
-          const currentMonthItems = justMonthItems.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear())
+          const currentMonthItems = items.filter((item) => {
+            const date = new Date(buildDateString(item.Date))
+            if(date.getMonth() === new Date().getMonth()) return item
+          }).filter((item) => {
+            const date = new Date(buildDateString(item.Date))
+            if(date.getFullYear() === new Date().getFullYear()) return item
+          });
           if(currentMonthItems.length == 0) {
             setTotalCostOfItems(0);
           } else {
@@ -64,7 +74,10 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
           }
           break;
         case CURRENT_YEAR:
-          const currentYearItems = items.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
+          const currentYearItems = items.filter((item) => {
+            const date = new Date(buildDateString(item.Date))
+            if(date.getFullYear() === new Date().getFullYear()) return item
+          });
           (currentYearItems.length === 0) ? setTotalCostOfItems(0) : setTotalCostOfItems(gettotalCostOfItems(currentYearItems));
           break;
         default:
@@ -102,10 +115,18 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
       case ALL:
         return filteredItems;
       case CURRENT_MONTH:
-        const currentMonth = filteredItems.filter((item) => new Date(item.Date).getMonth() === new Date().getMonth());
-        return currentMonth.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
+        return filteredItems.filter((item) => {
+          const date = new Date(buildDateString(item.Date))
+          if(date.getMonth() === new Date().getMonth()) return item
+        }).filter((item) => {
+          const date = new Date(buildDateString(item.Date))
+          if(date.getFullYear() === new Date().getFullYear()) return item
+        });
       case CURRENT_YEAR:
-        return filteredItems.filter((item) => new Date(item.Date).getFullYear() === new Date().getFullYear());
+        return filteredItems.filter((item) => {
+          const date = new Date(buildDateString(item.Date))
+          if(date.getFullYear() === new Date().getFullYear()) return item
+        });
       default:
         return filteredItems;
     }
@@ -136,6 +157,7 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
     }
     const deleteItem = async (itemId) => {
       setError(null);
+      setIsLoading(true);
       try {
         const response = await axiosPrivate.delete(`${url}/${itemId}`);
         removeItem(itemId);
@@ -143,7 +165,11 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
       catch(error) {
         decipherError(error);
       }
+      finally {
+        setIsLoading(false)
+      }
     }
+   
     let content = (
       <>
       <div className={styles.filters}>
@@ -175,8 +201,15 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
       />
       </>
     )
-    if(isloading) {
-      content = <p>Loading ...</p>
+    let modalContent = <LoadingIndicator />
+    if(error) {
+      modalContent = (
+        <div className={"errorModal"}>
+        <h1>Error</h1>
+        <hr />
+        <p className={`errorDisplay`}>{error}</p>
+       </div>
+      )
     }
   return (
     <div>
@@ -189,14 +222,8 @@ const TableControl = ({items, addFilter, url, columns, removeItem}) => {
         {isModalOpen && <Modal
                 isModalOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                content={
-                  <div className={"errorModal"}>
-                    <h1>Error</h1>
-                    <hr />
-                    <p className={`errorDisplay`}>{error}</p>
-                  </div>
-                }
-              />}
+                content={modalContent}
+                />}
         </AnimatePresence>
     </div>
   );

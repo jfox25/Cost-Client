@@ -24,3 +24,15 @@
     font-weight: bold;
     color: #d2042d;
 }
+.deleteButton {
+    background-color: #d2042d;
+    color: whitesmoke;
+    font-weight: 900;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    padding: 5px 7px;
+}
+.deleteButton:hover {
+    cursor: pointer;
+    border: 2px solid red;
+}

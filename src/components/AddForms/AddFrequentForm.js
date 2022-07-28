@@ -1,9 +1,10 @@
-import React, {useRef, useState, useCallback, useEffect} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import styles from './Forms.module.css'
 import RequiredSelectInput from './RequiredSelectInput';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { motion, AnimatePresence } from 'framer-motion';
 import  { useNavigate, useLocation } from "react-router-dom";
+import LoadingIndicator from '../Extra/LoadingIndicator';
 
 const showMore = {
     hidden: {
@@ -79,7 +80,6 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
                 billedEvery : (isRecurring)? billedEveryRef.current.value : 0,
                 lastUsedDate : (isRecurring)? lastUsedDateRef.current.value : null,
             }
-            console.log(frequent)
             postFrequent(frequent);
         }
     }
@@ -251,7 +251,7 @@ export default function AddFrequentForm({ onClose, fetchItems }) {
     </>
   )
   if(isloading) {
-    content = <p>Loading ...</p>
+    content = <LoadingIndicator />
   }
   return (
     <div>

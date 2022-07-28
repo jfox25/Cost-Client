@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import AuthContext from "../context/AuthProvider";
+import AuthContext from "../../context/AuthProvider";
 import {useNavigate} from "react-router-dom"
 import { useState } from "react";
-import axios from "../api/axios";
-import styles from "./Navbar.module.css"
-import Modal from "./Modal/Modal";
-import UserProfile from "./UserProfile/UserProfile";
+import axios from "../../api/axios";
+import styles from "../Navbar.module.css"
+import Modal from "../Modal/Modal";
+import UserProfile from "../UserProfile/UserProfile";
 import { AnimatePresence } from "framer-motion";
 const LOGOUT_URL = "/account/logout"
 

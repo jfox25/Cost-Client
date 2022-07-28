@@ -3,7 +3,6 @@ import { useState, useEffect} from "react";
 import { Chart as ChartJS} from "chart.js/auto";
 import styles from "./Chart.module.css";
 const BarChart = ({ data, title }) => {
-    console.log(data)
     const [showTotalCost,setShowTotalCost] = useState(true);
     const [displayData ,setDisplayData] = useState({
         labels : data.map((dataItem) => dataItem.Name),

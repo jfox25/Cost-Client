@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import styles from "./StaticPages.module.css";
-import logo from "../images/CostLogo.png"
-import SlideShow from "./SlideShow";
+import styles from "../StaticPages.module.css";
+import logo from "../../images/CostLogo.png";
+import SlideShow from ".././Extra/SlideShow";
 const BENEFIT_LIST = [
     "Easily keep track of all your Expenses, Frequents, Categories,and Businesses.",
     "Our interactive tables allow you to easily sort, delete, view, and filter your data.",

@@ -5,6 +5,7 @@ import RequiredSelectInput from './RequiredSelectInput';
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { motion, AnimatePresence } from 'framer-motion';
 import  { useNavigate, useLocation } from "react-router-dom";
+import LoadingIndicator from '../Extra/LoadingIndicator';
 const URL = "/expenses"
 
 const showMore = {
@@ -315,7 +316,7 @@ const AddExpenseForm = ({onClose, fetchItems}) => {
       </>
     )
     if(isloading) {
-      content = <p>Loading ...</p>
+      content = <LoadingIndicator />
     }
     return (
       <div>

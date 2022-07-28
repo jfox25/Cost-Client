@@ -5,10 +5,11 @@ import axios from "../../api/axios";
 import logo from "../../images/CostLogo.png"
 import styles from "./Register.module.css"
 import stylesStatic from ".././StaticPages.module.css"
+import LoadingIndicator from "../Extra/LoadingIndicator";
 
 const Login = () => {
     const { setAuth, persist, setPersist } = useAuth();
-
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/expenses"
@@ -19,9 +20,10 @@ const Login = () => {
     const [error, setError] = useState("")
 
     const LOGIN_URL = "/account/login"
-
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        setError(null);
+        setIsLoading(true);
         try {
             const response = await axios.post(LOGIN_URL,
                 JSON.stringify({ Email : email, Password : pwd }),
@@ -46,6 +48,9 @@ const Login = () => {
                 setError("Login failed")
             }
         }
+        finally {
+            setIsLoading(false)
+        }
     }
     const togglePersist =() => {
         setPersist(prev => !prev);
@@ -53,13 +58,10 @@ const Login = () => {
     useEffect(() => {
         localStorage.setItem("persist", persist)
     }, [persist])
- return (
-    <div className={stylesStatic.background}>
-        <div className={stylesStatic.backgroundContainer}>
-            <div className={stylesStatic.container}>
 
-                <form className={styles.form} onSubmit={handleFormSubmit}>
-                    <Link to="/"><img src={logo} className={styles.logo}/></Link>
+    let content = (
+        <>
+             <Link to="/"><img src={logo} className={styles.logo}/></Link>
                     <h2 className={styles.loginTitle}>Login</h2>
                     <div className={styles.error}>
                         {(message === "") ? null : <p className={styles.message}>{message}</p>}
@@ -95,6 +97,17 @@ const Login = () => {
                 </div>
                 <p className={styles.loginLabel}>Create an account</p>
                     <Link to="/register">Register</Link>
+        </>
+    )
+    if(isLoading) {
+        content = <LoadingIndicator />
+    }
+ return (
+    <div className={stylesStatic.background}>
+        <div className={stylesStatic.backgroundContainer}>
+            <div className={stylesStatic.container}>
+                <form className={styles.form} onSubmit={handleFormSubmit}>
+                   {content}
                 </form>
             </div>
         </div>

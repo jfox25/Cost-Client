@@ -1,4 +1,5 @@
 .table-heading-row {
+    position: sticky;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -16,6 +17,7 @@
     vertical-align: middle;
 }
 .table-heading {
+    position: sticky;
     padding: 12px 20px;
     cursor: pointer;
     text-align: center;

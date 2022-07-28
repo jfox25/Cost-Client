@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
 import styles from "../Table/ItemDetail.module.css"
+import LoadingIndicator from "../Extra/LoadingIndicator";
 const URL = "analytic/userAnalytics"
 const UserProfile = () => {
     const [data, setData] = useState({});
@@ -77,7 +78,7 @@ const UserProfile = () => {
         )
     }
     if(isLoading) {
-        content = <p>Loading ...</p>
+        content = <LoadingIndicator />
     }
     return (
         <div>

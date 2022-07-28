@@ -1,11 +1,12 @@
 import {useState, useEffect, useCallback} from "react"
-import TableControl from "./Table/TableControl"
-import AddFrequentForm from "./AddForms/AddFrequentForm";
-import AddControl from "./Add/AddControl"
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import TableControl from "../Table/TableControl"
+import AddFrequentForm from "../AddForms/AddFrequentForm";
+import AddControl from "../Add/AddControl"
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import  { useNavigate, useLocation } from "react-router-dom";
-import Modal from "./Modal/Modal";
+import Modal from "../Modal/Modal";
 import { AnimatePresence } from "framer-motion";
+import LoadingIndicator from "../Extra/LoadingIndicator";
 
 const FrequentPage = () => {
     const dateConvertor = (date, monthIncrementor = 0) => {
@@ -19,11 +20,7 @@ const FrequentPage = () => {
         }
         if(month > 12) {
           const numberOfYears = Math.floor(month / 12);
-          console.log(numberOfYears)
-          console.log(month)
           month = (month - (numberOfYears * 12));
-          console.log(month)
-          // month = 5;
           year = year + numberOfYears;
         }
         if (month < 10) {
@@ -101,11 +98,11 @@ const FrequentPage = () => {
     }
     let content = <TableControl url="/frequents" addFilter={false} columns={columns} items={items} removeItem={removeItem}/>;
     if(isloading) {
-        content = <p>Loading ...</p>
+        content = <LoadingIndicator />
     }
     return (
       <div>
-        <h1>Frequents</h1>
+        <h1 className="pageTitle">Frequents</h1>
         {content}
         <AddControl
           content={<AddFrequentForm fetchItems={fetchItemHandler} />}
